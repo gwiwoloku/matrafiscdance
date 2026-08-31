@@ -1,26 +1,47 @@
 # Matrafisc Dance — Marketing Website
 
-A portfolio-first static website for Matrafisc Dance Company.
+A modern, repertoire-first static marketing website for Matrafisc Dance Company.
 
-## Direction
+## Creative direction
 
-The redesign intentionally moves away from the old WordPress navigation hierarchy and puts the repertoire first. The visual language keeps Matrafisc's existing deep indigo / white identity while introducing a more editorial, contemporary art direction.
+The redesign keeps Matrafisc's established deep indigo / white identity but replaces the old WordPress hierarchy with a contemporary editorial experience built around the work itself.
 
-## Included
+Typography uses **Space Grotesk** for the display system and **Inter** for body copy. There is no decorative serif font.
 
-- Responsive, mobile-first static site with no framework or build step.
-- Artistic portfolio layout centred on Matrafisc's works.
-- Interactive production panels for show synopsis, credits, format, touring context and media.
-- Video support through privacy-enhanced YouTube embeds.
-- Photo/video support through Instagram embeds and gallery-ready media areas.
-- Current/recent repertoire including Bruise, 1+1=1, Periodo Blu, Soul's Paths, The World in My Body and October.
-- Company background and international touring context.
-- Contact and social links.
-- Reduced-motion accessibility support, keyboard-operable production cards and responsive navigation.
+## What is included
+
+- Fully responsive static website with no framework or build step.
+- Work-first homepage with real Matrafisc archive photography.
+- Filterable repertoire covering productions, events, collaborations and recent work.
+- 15 works represented in the current archive:
+  - Bruise
+  - Jobs
+  - Soul's Paths
+  - Periodo Blu
+  - 1+1=1
+  - Is Someone Listening?
+  - Europia
+  - That Place Over There
+  - Study of Hands #2
+  - Monkey & Leopard
+  - Restlessness
+  - Midsummer Night's Memory
+  - Tightrope Walkers
+  - October
+  - The World in My Body
+- Production detail experiences with synopsis, format, creators, archive credits and enquiry links.
+- Picture gallery support for every show.
+- YouTube, Vimeo and Instagram video/embed support.
+- Original archive imagery surfaced for **That Place Over There**.
+- Existing Matrafisc production marks/logos reused where available.
+- Featured film treatment for Periodo Blu.
+- Company positioning, artistic statement, repertoire timeline and international touring section.
+- SEO metadata, Open Graph metadata and PerformingGroup structured data.
+- Keyboard-accessible navigation/dialogs, reduced-motion support and mobile menu.
 
 ## Run locally
 
-No dependencies are required. Open `index.html` directly or serve the directory with any static server, for example:
+No dependencies are required.
 
 ```bash
 python3 -m http.server 8080
@@ -28,12 +49,14 @@ python3 -m http.server 8080
 
 Then open `http://localhost:8080`.
 
-## Content / media notes
+## Media migration note
 
-The first marketing version uses confirmed public Matrafisc material found on the current website, public programmes, the company's YouTube embed and recent Matrafisc Instagram posts. Older production galleries are represented by ready-to-fill gallery areas until the original high-resolution photography is supplied or migrated from the current WordPress media library.
+The redesign currently references a small number of verified images and production marks from the existing `matrafiscdance.com/wp-content/uploads/` archive so the marketing build can use genuine company material immediately.
 
-For production use, the recommended next step is to add original high-resolution company photography to `assets/images/` rather than depending on third-party social embeds for the core visual experience.
+When replacing the old WordPress site on the live domain, **preserve the existing `/wp-content/uploads/` media paths** or copy those assets into this repository and update the URLs. This prevents broken archive photography when DNS/hosting changes.
+
+The production detail system is already designed for multiple photographs and videos per show, so additional original high-resolution images can be added without redesigning the site.
 
 ## Deployment
 
-The site is suitable for GitHub Pages, Netlify, Vercel static hosting, Cloudflare Pages, or a conventional web server. Point `matrafiscdance.com` to the chosen deployment once approved.
+The site can be hosted on GitHub Pages, Netlify, Vercel, Cloudflare Pages or any conventional static web server. Point `matrafiscdance.com` at the selected host only after preserving/migrating the existing WordPress media archive.
