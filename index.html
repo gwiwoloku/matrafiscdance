@@ -3,15 +3,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Matrafisc Dance is a Manchester-based contemporary dance company creating performance work across theatre, site-specific spaces and international collaborations." />
+  <meta name="description" content="Matrafisc Dance is a Manchester-based contemporary dance company creating performance work across theatre, site-specific spaces, education and international collaboration." />
   <meta name="theme-color" content="#202a66" />
+  <meta property="og:title" content="Matrafisc Dance — Contemporary Dance Company" />
+  <meta property="og:description" content="Explore the work, films, collaborations and touring history of Matrafisc Dance Company." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://matrafiscdance.com/" />
+  <meta property="og:image" content="https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg" />
   <title>Matrafisc Dance — Contemporary Dance Company</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"PerformingGroup",
+    "name":"Matrafisc Dance Company",
+    "url":"https://matrafiscdance.com/",
+    "email":"matrafiscdance@gmail.com",
+    "foundingDate":"2015",
+    "foundingLocation":"Manchester, United Kingdom",
+    "sameAs":["https://www.instagram.com/matrafiscdance","https://www.facebook.com/matafiscdancecompany/"]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header" id="top">
     <a class="brand" href="#top" aria-label="Matrafisc Dance home">
       <span>MATRAFISC</span>
@@ -26,77 +45,81 @@
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-copy reveal">
         <p class="eyebrow">Manchester · Contemporary dance · Since 2015</p>
-        <h1><span>Movement</span><span>becomes</span><span>memory.</span></h1>
+        <h1 id="hero-title"><span>Movement</span><span>becomes</span><span>memory.</span></h1>
         <div class="hero-bottom">
-          <p>Matrafisc creates dance about identity, psychology, lived experience and the traces that remain in the body.</p>
+          <p>Dance about identity, psychology, lived experience and the traces that remain in the body.</p>
           <a class="round-link" href="#works" aria-label="Explore repertoire">↘</a>
         </div>
       </div>
-      <div class="hero-composition reveal" aria-hidden="true">
-        <div class="composition-frame frame-one"><span>body</span></div>
-        <div class="composition-frame frame-two"><span>space</span></div>
-        <div class="composition-frame frame-three"><span>memory</span></div>
-        <div class="composition-line line-a"></div>
-        <div class="composition-line line-b"></div>
+
+      <div class="hero-gallery reveal" aria-label="Matrafisc Dance performance photography">
+        <figure class="hero-photo hero-photo-main">
+          <img src="https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg" alt="Matrafisc dancers performing That Place Over There" />
+        </figure>
+        <figure class="hero-photo hero-photo-small">
+          <img src="https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT3-1.jpeg" alt="Dancer performing on stage in That Place Over There" />
+        </figure>
+        <p class="hero-caption"><span>That Place Over There</span><span>Salford University collaboration</span></p>
       </div>
       <div class="hero-index" aria-hidden="true">M / 01</div>
     </section>
 
-    <section class="works" id="works">
+    <section class="works" id="works" aria-labelledby="works-title">
       <div class="works-intro section-pad reveal">
         <div>
           <p class="eyebrow">Repertoire / archive</p>
-          <h2>One evolving body of work.</h2>
+          <h2 id="works-title">One evolving<br />body of work.</h2>
         </div>
-        <p>Productions, events and collaborations are presented together here as one continuous artistic history. Open any work for synopsis, credits, photography and video.</p>
+        <div class="works-intro-copy">
+          <p>Productions, commissions, events and collaborations now live together as one artistic history. Open a work for synopsis, credits, photography and film.</p>
+          <div class="work-filters" aria-label="Filter repertoire">
+            <button type="button" class="filter-button active" data-filter="all">All</button>
+            <button type="button" class="filter-button" data-filter="production">Productions</button>
+            <button type="button" class="filter-button" data-filter="event">Events</button>
+            <button type="button" class="filter-button" data-filter="collaboration">Collaborations</button>
+            <button type="button" class="filter-button" data-filter="recent">Recent</button>
+          </div>
+        </div>
       </div>
 
-      <div class="repertoire" aria-label="Matrafisc repertoire">
-        <button class="repertoire-row reveal" data-work="bruise" type="button">
-          <span class="work-no">01</span><span class="work-title">Bruise</span><span class="work-kind">Dance theatre · duet</span><span class="work-date">2015 →</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="jobs" type="button">
-          <span class="work-no">02</span><span class="work-title">Jobs</span><span class="work-kind">Dance theatre</span><span class="work-date">Archive</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="souls" type="button">
-          <span class="work-no">03</span><span class="work-title">Soul’s Paths</span><span class="work-kind">Site-specific · live music</span><span class="work-date">2016</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="periodo" type="button">
-          <span class="work-no">04</span><span class="work-title">Periodo Blu</span><span class="work-kind">Dance theatre · duet</span><span class="work-date">2017–18</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="one" type="button">
-          <span class="work-no">05</span><span class="work-title">1+1=1</span><span class="work-kind">Ensemble</span><span class="work-date">2019 →</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="listening" type="button">
-          <span class="work-no">06</span><span class="work-title">Is Someone Listening?</span><span class="work-kind">Ensemble</span><span class="work-date">Archive</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="europia" type="button">
-          <span class="work-no">07</span><span class="work-title">Europia</span><span class="work-kind">Tradition / contemporary</span><span class="work-date">Archive</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="restlessness" type="button">
-          <span class="work-no">08</span><span class="work-title">Restlessness</span><span class="work-kind">Commission · Bodiography</span><span class="work-date">USA</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="midsummer" type="button">
-          <span class="work-no">09</span><span class="work-title">Midsummer Night’s Memory</span><span class="work-kind">Duet · collaboration</span><span class="work-date">USA</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="october" type="button">
-          <span class="work-no">10</span><span class="work-title">October</span><span class="work-kind">Duet</span><span class="work-date">2020 →</span><span class="work-arrow">↗</span>
-        </button>
-        <button class="repertoire-row reveal" data-work="world" type="button">
-          <span class="work-no">11</span><span class="work-title">The World in My Body</span><span class="work-kind">Solo</span><span class="work-date">2025</span><span class="work-arrow">↗</span>
-        </button>
+      <div class="repertoire" aria-live="polite" aria-label="Matrafisc repertoire">
+        <button class="repertoire-row reveal" data-work="bruise" data-group="production" type="button"><span class="work-no">01</span><span class="work-title">Bruise</span><span class="work-kind">Dance theatre · duet</span><span class="work-date">2015 →</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="jobs" data-group="production" type="button"><span class="work-no">02</span><span class="work-title">Jobs</span><span class="work-kind">Dance theatre</span><span class="work-date">Archive</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="souls" data-group="production" type="button"><span class="work-no">03</span><span class="work-title">Soul’s Paths</span><span class="work-kind">Site-specific · live music</span><span class="work-date">2016–17</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="periodo" data-group="production" type="button"><span class="work-no">04</span><span class="work-title">Periodo Blu</span><span class="work-kind">Dance theatre · duet</span><span class="work-date">2017–18</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="one" data-group="production" type="button"><span class="work-no">05</span><span class="work-title">1+1=1</span><span class="work-kind">Ensemble</span><span class="work-date">2019 →</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="listening" data-group="event" type="button"><span class="work-no">06</span><span class="work-title">Is Someone Listening?</span><span class="work-kind">Ensemble</span><span class="work-date">Event work</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="europia" data-group="event" type="button"><span class="work-no">07</span><span class="work-title">Europia</span><span class="work-kind">Tradition / contemporary</span><span class="work-date">Event work</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="thatplace" data-group="collaboration" type="button"><span class="work-no">08</span><span class="work-title">That Place Over There</span><span class="work-kind">Salford University · ensemble</span><span class="work-date">2018–19</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="study" data-group="collaboration" type="button"><span class="work-no">09</span><span class="work-title">Study of Hands #2</span><span class="work-kind">Gallery / site-specific research</span><span class="work-date">2018–19</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="monkey" data-group="collaboration" type="button"><span class="work-no">10</span><span class="work-title">Monkey &amp; Leopard</span><span class="work-kind">Children / R&amp;D</span><span class="work-date">2019</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="restlessness" data-group="collaboration" type="button"><span class="work-no">11</span><span class="work-title">Restlessness</span><span class="work-kind">Commission · Bodiography</span><span class="work-date">USA</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="midsummer" data-group="collaboration" type="button"><span class="work-no">12</span><span class="work-title">Midsummer Night’s Memory</span><span class="work-kind">Duet · Bodiography</span><span class="work-date">USA</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="tightrope" data-group="collaboration" type="button"><span class="work-no">13</span><span class="work-title">Tightrope Walkers</span><span class="work-kind">Akerusia Danza · research</span><span class="work-date">Collaboration</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="october" data-group="recent" type="button"><span class="work-no">14</span><span class="work-title">October</span><span class="work-kind">Duet</span><span class="work-date">2020 →</span><span class="work-arrow">↗</span></button>
+        <button class="repertoire-row reveal" data-work="world" data-group="recent" type="button"><span class="work-no">15</span><span class="work-title">The World in My Body</span><span class="work-kind">Solo</span><span class="work-date">2025</span><span class="work-arrow">↗</span></button>
       </div>
     </section>
 
-    <section class="featured" aria-label="Featured work">
+    <section class="image-break" aria-label="Performance image from That Place Over There">
+      <img src="https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT2-1.jpg" alt="Matrafisc dancer moving on a dark stage" loading="lazy" />
+      <div class="image-break-overlay">
+        <p class="eyebrow">Performance / education / collaboration</p>
+        <p class="image-statement">The work changes with<br />the bodies that carry it.</p>
+        <button type="button" class="image-link" data-work="thatplace">Explore That Place Over There ↗</button>
+      </div>
+      <div class="image-credit">Matrafisc Dance · archive photography</div>
+    </section>
+
+    <section class="featured" aria-label="Featured film">
       <div class="featured-copy reveal">
         <p class="eyebrow">Featured film / 04</p>
-        <h2>Periodo<br>Blu</h2>
+        <h2>Periodo<br />Blu</h2>
         <p>Two characters occupy different shades of blue: one facing possibility, the other anchored to the past. A work about the human condition, memory and the tension between movement and stasis.</p>
         <button class="outline-link" type="button" data-work="periodo">View the full work <span>↗</span></button>
       </div>
@@ -108,38 +131,48 @@
       </div>
     </section>
 
-    <section class="company section-pad" id="company">
+    <section class="company section-pad" id="company" aria-labelledby="company-title">
       <div class="company-heading reveal">
         <p class="eyebrow">The company</p>
-        <h2>Different histories.<br>One choreographic language.</h2>
+        <h2 id="company-title">Different histories.<br />One choreographic language.</h2>
       </div>
       <div class="company-layout reveal">
-        <div class="company-mark">M</div>
+        <div class="company-mark" aria-hidden="true">M</div>
         <div class="company-copy">
-          <p>Matrafisc was born in Manchester from the artistic collaboration of Italian choreographers Ina Colizza and Antonello Apicella. Their work combines different training, cultural references and creative instincts into a shared language.</p>
-          <p>The repertoire moves through psychology, identity, memory, relationships and social experience, shifting between theatrical stages, site-specific work and international collaboration.</p>
+          <p>Matrafisc Dance was established in Manchester in 2015 through the artistic collaboration of Italian choreographers Ina Colizza and Antonello Apicella.</p>
+          <p>Their research moves beyond dance aesthetics into psychology, memory, identity, relationships and lived experience — searching for movement that carries emotional truth.</p>
+          <a href="mailto:matrafiscdance@gmail.com?subject=Matrafisc%20Dance%20-%20artist%20or%20company%20enquiry">Work with Matrafisc ↗</a>
         </div>
       </div>
+      <blockquote class="manifesto reveal">“We want to bring the truth of every movement on stage.”</blockquote>
     </section>
 
-    <section class="touring section-pad" id="touring">
+    <section class="timeline" aria-label="Company repertoire timeline">
+      <div class="timeline-item"><span>2015</span><strong>Bruise</strong><p>The first creation establishes the company’s autobiographical, psychologically driven language.</p></div>
+      <div class="timeline-item"><span>2016–17</span><strong>Soul’s Paths</strong><p>Site-specific work, live music and a shared audience journey.</p></div>
+      <div class="timeline-item"><span>2017–20</span><strong>Periodo Blu · 1+1=1 · October</strong><p>The repertoire expands through identity, memory and international development.</p></div>
+      <div class="timeline-item"><span>Collaborations</span><strong>Salford · Bodiography · Akerusia</strong><p>Commissioned, educational and research-led work extends the company language.</p></div>
+      <div class="timeline-item"><span>2025</span><strong>The World in My Body</strong><p>A recent solo exploring strength, transformation and the body after birth.</p></div>
+    </section>
+
+    <section class="touring section-pad" id="touring" aria-labelledby="touring-title">
       <div class="touring-head reveal">
         <p class="eyebrow">Touring / collaborations</p>
-        <h2>Manchester made.<br>International in motion.</h2>
+        <h2 id="touring-title">Manchester made.<br />International in motion.</h2>
       </div>
-      <div class="touring-strip reveal">
+      <div class="touring-strip reveal" aria-label="Countries where Matrafisc work has been presented or developed">
         <span>United Kingdom</span><b>→</b><span>Italy</span><b>→</b><span>Netherlands</span><b>→</b><span>Mexico</span><b>→</b><span>United States</span>
       </div>
       <div class="touring-notes reveal">
-        <p>Work has travelled through theatres, festivals, commissioned collaborations and community settings. The new website is structured so every production can carry its own touring history, technical information and media archive.</p>
-        <a href="mailto:matrafiscdance@gmail.com">Programming & touring enquiries ↗</a>
+        <p>Matrafisc works across theatres, festivals, commissioned collaborations, universities and site-specific environments. Productions can be presented alongside workshops, residencies and creative development.</p>
+        <a href="mailto:matrafiscdance@gmail.com?subject=Matrafisc%20Dance%20-%20touring%20enquiry">Programming &amp; touring enquiries ↗</a>
       </div>
     </section>
 
-    <section class="contact section-pad" id="contact">
+    <section class="contact section-pad" id="contact" aria-labelledby="contact-title">
       <p class="eyebrow reveal">Programming · Touring · Collaboration</p>
       <div class="contact-grid reveal">
-        <h2>Bring the work<br>into your space.</h2>
+        <h2 id="contact-title">Bring the work<br />into your space.</h2>
         <div class="contact-links">
           <a href="mailto:matrafiscdance@gmail.com">matrafiscdance@gmail.com <span>↗</span></a>
           <a href="tel:+447541986885">UK +44 754 198 6885 <span>↗</span></a>
@@ -151,10 +184,10 @@
   </main>
 
   <footer class="site-footer">
-    <span>© Matrafisc Dance Company</span><span>Manchester, UK</span><a href="#top">Top ↑</a>
+    <span>© <span id="year"></span> Matrafisc Dance Company</span><span>Manchester, UK</span><a href="#top">Top ↑</a>
   </footer>
 
-  <dialog class="work-dialog" id="work-dialog">
+  <dialog class="work-dialog" id="work-dialog" aria-labelledby="dialog-title">
     <button class="dialog-close" aria-label="Close production">×</button>
     <div class="dialog-content" id="dialog-content"></div>
   </dialog>
