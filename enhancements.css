@@ -1,0 +1,63 @@
+/* Final brand, icon and contact-form enhancements. Kept separate so manual edits remain easy. */
+.brand{width:clamp(132px,13vw,190px);height:auto;line-height:normal}
+.brand-logo{display:block;width:100%;height:auto;object-fit:contain;transition:filter .25s ease,opacity .25s ease}
+.site-header.scrolled .brand-logo{filter:brightness(0) saturate(100%)}
+.menu-toggle{display:none;align-items:center;justify-content:center;cursor:pointer}
+.menu-toggle i{font-size:22px}
+.round-link i{font-size:16px}
+.work-arrow i{font-size:15px}
+.image-link i,.outline-link i,.touring-notes a i,.company-copy a i{margin-left:9px;font-size:.9em}
+.media-caption i{margin-right:6px}
+
+.company-logo-panel{min-height:360px;background:var(--blue);display:flex;align-items:center;justify-content:center;padding:clamp(32px,5vw,72px);overflow:hidden}
+.company-logo-panel img{width:min(100%,430px);height:auto;opacity:.96}
+
+.contact-heading{max-width:900px;margin-bottom:clamp(48px,6vw,86px)}
+.contact-heading h2{margin-bottom:24px}
+.contact-heading>p:last-child{max-width:670px;margin:0;color:#555965;font-size:15px;line-height:1.7}
+.contact-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(270px,.7fr);gap:clamp(45px,7vw,110px);align-items:start}
+.contact-form{border-top:1px solid var(--line);padding-top:28px}
+.form-row{display:grid;gap:22px;margin-bottom:22px}
+.form-row.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.contact-form label{display:flex;flex-direction:column;gap:9px;min-width:0}
+.contact-form label>span{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;border:1px solid var(--line);border-radius:0;background:rgba(255,255,255,.42);color:var(--ink);padding:14px 15px;font:400 14px/1.5 var(--body);outline:none;transition:border-color .2s,background .2s,box-shadow .2s}
+.contact-form input,.contact-form select{min-height:50px}
+.contact-form textarea{resize:vertical;min-height:170px}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(32,42,102,.09)}
+.contact-form input:user-invalid,.contact-form select:user-invalid,.contact-form textarea:user-invalid{border-color:#9a2e2e}
+.message-label{margin-top:3px}
+.form-actions{display:flex;align-items:center;gap:24px;margin-top:24px}
+.contact-submit{border:1px solid var(--blue);background:var(--blue);color:var(--white);min-height:52px;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;gap:12px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.contact-submit:hover,.contact-submit:focus-visible{background:transparent;color:var(--blue);transform:translateY(-1px);outline:none}
+.contact-status{max-width:430px;margin:0;font-size:10px;line-height:1.55;color:var(--muted)}
+.contact-status.is-error{color:#8c2828}
+.contact-status.is-ready{color:var(--blue)}
+.contact-details{border-top:1px solid var(--line);padding-top:28px}
+.contact-detail-label{margin:0 0 14px;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.contact-details>a{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-size:13px;word-break:break-word}
+.contact-details>a i{color:var(--blue);font-size:14px}
+.contact-socials{display:flex;gap:10px;margin-top:22px}
+.contact-socials a{width:44px;height:44px;border:1px solid var(--line);display:grid;place-items:center;transition:.2s}
+.contact-socials a:hover,.contact-socials a:focus-visible{background:var(--blue);color:var(--white);border-color:var(--blue);outline:none}
+
+.dialog-enquire{display:inline-flex!important;align-items:center;gap:10px;cursor:pointer}
+.dialog-enquire i{font-size:12px}
+.dialog-close{display:grid;place-items:center;padding:0}
+.dialog-close i{font-size:22px}
+
+@media(max-width:820px){
+  .menu-toggle{display:flex}
+  .brand{width:150px}
+  .contact-layout{grid-template-columns:1fr}
+  .contact-details{max-width:520px}
+  .company-logo-panel{min-height:280px}
+}
+
+@media(max-width:560px){
+  .brand{width:132px}
+  .form-row.two-col{grid-template-columns:1fr}
+  .form-actions{align-items:flex-start;flex-direction:column}
+  .contact-submit{width:100%}
+  .company-logo-panel{min-height:220px;padding:34px}
+}
