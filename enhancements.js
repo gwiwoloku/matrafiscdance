@@ -8,13 +8,51 @@
   const dialog = document.getElementById('work-dialog');
   const menuToggle = document.querySelector('.menu-toggle');
   const menuIcon = menuToggle?.querySelector('i');
+  const submitButton = form?.querySelector('.contact-submit');
   const targetEmail = 'matrafiscdance@gmail.com';
+  const formSubmitEndpoint = `https://formsubmit.co/ajax/${targetEmail}`;
+  const defaultSubmitMarkup = submitButton?.innerHTML || 'Send enquiry';
+
+  // Progressive enhancement: keep the existing mailto fallback in the HTML for visitors
+  // without JavaScript, but use FormSubmit whenever JavaScript is available.
+  if (form) {
+    form.action = `https://formsubmit.co/${targetEmail}`;
+    form.method = 'POST';
+    form.removeAttribute('enctype');
+
+    // FormSubmit honeypot. It is visually hidden but remains a normal text field for bots.
+    const honeypot = document.createElement('input');
+    honeypot.type = 'text';
+    honeypot.name = '_honey';
+    honeypot.autocomplete = 'off';
+    honeypot.tabIndex = -1;
+    honeypot.setAttribute('aria-hidden', 'true');
+    honeypot.style.position = 'absolute';
+    honeypot.style.left = '-10000px';
+    honeypot.style.width = '1px';
+    honeypot.style.height = '1px';
+    honeypot.style.opacity = '0';
+    form.appendChild(honeypot);
+  }
+
+  if (status) {
+    status.textContent = 'Your enquiry will be sent directly to Matrafisc Dance.';
+  }
 
   function updateWorkField() {
     const isWork = typeField?.value === 'Work enquiry';
     if (workWrap) workWrap.hidden = !isWork;
     if (workField) workField.required = Boolean(isWork);
     if (!isWork && workField) workField.value = '';
+  }
+
+  function setSubmitting(isSubmitting) {
+    if (!submitButton) return;
+    submitButton.disabled = isSubmitting;
+    submitButton.setAttribute('aria-busy', String(isSubmitting));
+    submitButton.innerHTML = isSubmitting
+      ? 'Sending <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>'
+      : defaultSubmitMarkup;
   }
 
   function fillEnquiry(type, work = '') {
@@ -68,7 +106,7 @@
   typeField?.addEventListener('change', updateWorkField);
   updateWorkField();
 
-  form?.addEventListener('submit', event => {
+  form?.addEventListener('submit', async event => {
     event.preventDefault();
 
     if (!form.checkValidity()) {
@@ -81,31 +119,62 @@
     }
 
     const data = new FormData(form);
-    const name = String(data.get('name') || '').trim();
-    const email = String(data.get('email') || '').trim();
+
+    // Quietly accept obvious bot submissions caught by the honeypot without contacting FormSubmit.
+    if (String(data.get('_honey') || '').trim()) {
+      form.reset();
+      updateWorkField();
+      return;
+    }
+
     const type = String(data.get('enquiryType') || 'General enquiry').trim();
     const work = String(data.get('work') || '').trim();
-    const message = String(data.get('message') || '').trim();
-
     const subject = work
       ? `Matrafisc Dance — ${type} — ${work}`
       : `Matrafisc Dance — ${type}`;
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Enquiry type: ${type}`,
-      work ? `Work: ${work}` : '',
-      '',
-      message
-    ].filter((line, index, array) => line !== '' || (index > 0 && array[index - 1] !== '')).join('\n');
+    data.set('_subject', subject);
+    data.set('_template', 'table');
+    data.set('Website page', window.location.href);
 
+    setSubmitting(true);
     if (status) {
-      status.textContent = 'Your email app is opening with the enquiry details prepared.';
-      status.className = 'contact-status is-ready';
+      status.textContent = 'Sending your enquiry…';
+      status.className = 'contact-status';
     }
 
-    window.location.href = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch(formSubmitEndpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json'
+        },
+        body: data
+      });
+
+      const payload = await response.json().catch(() => null);
+      const explicitlyFailed = payload && (payload.success === false || payload.success === 'false');
+
+      if (!response.ok || explicitlyFailed) {
+        throw new Error(payload?.message || `FormSubmit returned ${response.status}`);
+      }
+
+      form.reset();
+      updateWorkField();
+
+      if (status) {
+        status.textContent = 'Thank you — your enquiry has been sent to Matrafisc Dance.';
+        status.className = 'contact-status is-ready';
+      }
+    } catch (error) {
+      console.error('Matrafisc contact form submission failed:', error);
+      if (status) {
+        status.innerHTML = 'The enquiry could not be sent. Please try again or email <a href="mailto:matrafiscdance@gmail.com">matrafiscdance@gmail.com</a>.';
+        status.className = 'contact-status is-error';
+      }
+    } finally {
+      setSubmitting(false);
+    }
   });
 
   // Existing work dialogs are generated by script.js. Enhance their enquiry link after each render
