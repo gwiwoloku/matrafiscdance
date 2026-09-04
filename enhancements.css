@@ -10,8 +10,8 @@
 .image-link i,.outline-link i,.touring-notes a i,.company-copy a i{margin-left:9px;font-size:.9em}
 .media-caption i{margin-right:6px}
 
-.company-logo-panel{min-height:360px;background:var(--blue);display:flex;align-items:center;justify-content:center;padding:clamp(32px,5vw,72px);overflow:hidden}
-.company-logo-panel img{width:min(100%,430px);height:auto;opacity:.96}
+.company-logo-panel{min-height:360px;background:transparent;display:flex;align-items:center;justify-content:center;padding:clamp(32px,5vw,72px);overflow:hidden}
+.company-logo-panel img{width:min(100%,430px);height:auto;opacity:.96;filter:brightness(0) saturate(100%)}
 
 .contact-heading{max-width:900px;margin-bottom:clamp(48px,6vw,86px)}
 .contact-heading h2{margin-bottom:24px}
