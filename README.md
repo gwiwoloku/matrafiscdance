@@ -18,16 +18,41 @@ The redesign moves away from the old WordPress navigation hierarchy and presents
 - Company, timeline, touring and collaboration sections.
 - Contact form for work enquiries, touring/programming, collaborations, workshops/education, press/media and general enquiries.
 - Clicking **Enquire about this work** automatically pre-fills the contact form with the correct work and a work-specific starter message.
+- FormSubmit AJAX delivery with loading, success and error states plus a honeypot spam field.
 - Mobile navigation, keyboard-friendly dialogs, reduced-motion support and responsive layouts.
 - SEO/Open Graph metadata and PerformingGroup structured data.
 
 ## Contact-form behaviour
 
-This is intentionally still a static website. There is no server-side mail service or API key in the repository.
+The website is static, but contact requests are now sent directly from the browser through FormSubmit to `matrafiscdance@gmail.com`.
 
-When a visitor submits the contact form, `enhancements.js` validates the fields and opens the visitor's default email application with the subject and message already prepared for `matrafiscdance@gmail.com`. Nothing is sent until the visitor confirms it in their email application.
+No API key or FormSubmit account is stored in this repository. `enhancements.js` submits the form to:
 
-If direct in-browser form delivery is needed later, the form can be connected to Formspree, Netlify Forms, Web3Forms, a serverless function or another mail endpoint without redesigning the page.
+```text
+https://formsubmit.co/ajax/matrafiscdance@gmail.com
+```
+
+The form sends the visitor's name, email address, enquiry type, selected work when relevant, message, page URL and a dynamically generated email subject. Work-specific enquiry links continue to pre-fill the correct production before submission.
+
+### One-time FormSubmit activation
+
+FormSubmit requires the recipient email address to be confirmed the first time the form is used on the deployed website:
+
+1. Deploy the website.
+2. Submit one test enquiry from the contact form.
+3. Check `matrafiscdance@gmail.com` for the FormSubmit activation email.
+4. Click the activation/confirmation link in that email.
+5. Submit another test enquiry and confirm it arrives normally.
+
+Until the address is activated, the front end may accept the submission but FormSubmit will not operate as the final production mail route.
+
+### Spam protection
+
+A hidden `_honey` honeypot field is inserted by `enhancements.js`. Obvious bot submissions caught by this field are discarded before any request is made to FormSubmit. FormSubmit's own filtering remains available as well.
+
+### Failure behaviour
+
+If FormSubmit is unavailable or returns an error, the page keeps the visitor on the website and displays a direct `matrafiscdance@gmail.com` fallback link rather than losing their typed enquiry unexpectedly.
 
 ## Manual editing
 
@@ -35,11 +60,21 @@ The codebase is deliberately simple so it can be edited directly in GitHub or in
 
 - `index.html` — page structure, repertoire list, contact fields and visible copy.
 - `styles.css` — main design system and original responsive layout.
-- `enhancements.css` — logo, Font Awesome and contact-form styling added in the final refinement pass.
+- `enhancements.css` — logo, Font Awesome and contact-form styling added in the refinement pass.
 - `script.js` — repertoire/work data, filters, work dialogs and media embeds.
-- `enhancements.js` — contact prefill, email preparation and Font Awesome mobile-menu behaviour.
+- `enhancements.js` — FormSubmit delivery, contact prefill, submission states and Font Awesome mobile-menu behaviour.
 - `assets/branding/` — brand assets.
 - `assets/favicons/` — browser icons.
+
+### Changing the contact recipient
+
+If the receiving email address changes, update the `targetEmail` constant near the top of `enhancements.js`:
+
+```js
+const targetEmail = 'matrafiscdance@gmail.com';
+```
+
+The AJAX endpoint is generated automatically from that value.
 
 ### Adding or changing a work
 
@@ -57,6 +92,8 @@ python3 -m http.server 8080
 ```
 
 Then open `http://localhost:8080`.
+
+FormSubmit activation and production delivery should be tested from the deployed site rather than relied on from a local `file://` page.
 
 ## Deployment
 
