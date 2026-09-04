@@ -13,14 +13,13 @@
   const formSubmitEndpoint = `https://formsubmit.co/ajax/${targetEmail}`;
   const defaultSubmitMarkup = submitButton?.innerHTML || 'Send enquiry';
 
-  // Progressive enhancement: keep the existing mailto fallback in the HTML for visitors
-  // without JavaScript, but use FormSubmit whenever JavaScript is available.
+  // Progressive enhancement: the HTML form remains usable without JavaScript,
+  // while JavaScript submissions use FormSubmit's documented JSON AJAX endpoint.
   if (form) {
     form.action = `https://formsubmit.co/${targetEmail}`;
     form.method = 'POST';
     form.removeAttribute('enctype');
 
-    // FormSubmit honeypot. It is visually hidden but remains a normal text field for bots.
     const honeypot = document.createElement('input');
     honeypot.type = 'text';
     honeypot.name = '_honey';
@@ -120,22 +119,35 @@
 
     const data = new FormData(form);
 
-    // Quietly accept obvious bot submissions caught by the honeypot without contacting FormSubmit.
+    // Silently discard obvious bot submissions caught by the honeypot.
     if (String(data.get('_honey') || '').trim()) {
       form.reset();
       updateWorkField();
       return;
     }
 
+    const name = String(data.get('name') || '').trim();
+    const email = String(data.get('email') || '').trim();
     const type = String(data.get('enquiryType') || 'General enquiry').trim();
     const work = String(data.get('work') || '').trim();
+    const message = String(data.get('message') || '').trim();
     const subject = work
       ? `Matrafisc Dance — ${type} — ${work}`
       : `Matrafisc Dance — ${type}`;
 
-    data.set('_subject', subject);
-    data.set('_template', 'table');
-    data.set('Website page', window.location.href);
+    // FormSubmit's fetch documentation expects JSON with an explicit JSON content type.
+    const payload = {
+      name,
+      email,
+      enquiryType: type,
+      message,
+      _subject: subject,
+      _template: 'table',
+      _honey: '',
+      _url: window.location.href
+    };
+
+    if (work) payload.work = work;
 
     setSubmitting(true);
     if (status) {
@@ -147,16 +159,22 @@
       const response = await fetch(formSubmitEndpoint, {
         method: 'POST',
         headers: {
-          Accept: 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: data
+        body: JSON.stringify(payload)
       });
 
-      const payload = await response.json().catch(() => null);
-      const explicitlyFailed = payload && (payload.success === false || payload.success === 'false');
+      const result = await response.json().catch(() => null);
+      const success = result?.success === true || result?.success === 'true';
 
-      if (!response.ok || explicitlyFailed) {
-        throw new Error(payload?.message || `FormSubmit returned ${response.status}`);
+      if (!response.ok || !success) {
+        console.error('FormSubmit rejected the enquiry:', {
+          status: response.status,
+          statusText: response.statusText,
+          result
+        });
+        throw new Error(result?.message || `FormSubmit returned ${response.status}`);
       }
 
       form.reset();
