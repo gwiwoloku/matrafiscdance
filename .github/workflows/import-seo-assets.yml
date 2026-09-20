@@ -1,0 +1,78 @@
+name: Import legacy Matrafisc assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-seo-assets.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install image tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp imagemagick
+
+      - name: Download legacy WordPress assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/archive assets/archive/optimized
+
+          download() {
+            url="$1"
+            file="$2"
+            echo "Downloading $url -> $file"
+            curl --fail --location --retry 4 --retry-delay 2 --user-agent "Mozilla/5.0 MatrafiscMigrationBot/1.0" "$url" -o "assets/archive/$file"
+          }
+
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg" "TPOT1-1.jpg"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT2-1.jpg" "TPOT2-1.jpg"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT3-1.jpeg" "TPOT3-1.jpeg"
+          download "https://matrafiscdance.com/wp-content/uploads/2016/10/bruise_logo.png" "bruise_logo.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2016/10/jobs_matra.png" "jobs_matra.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2016/10/soul_paths_logo-1.png" "soul_paths_logo-1.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2017/07/periodo_blu_logo.png" "periodo_blu_logo.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/03/111_scritta.png" "111_scritta.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/valeria-famularo.png" "valeria-famularo.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/rest.png" "rest.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/midsummer.png" "midsummer.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/akerusia.png" "akerusia.png"
+          download "https://matrafiscdance.com/wp-content/uploads/2020/04/october.png" "october.png"
+
+      - name: Generate optimized WebP variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in assets/archive/*; do
+            [ -f "$file" ] || continue
+            base="$(basename "$file")"
+            stem="${base%.*}"
+            convert "$file" -auto-orient -resize '1920x1920>' -strip "assets/archive/optimized/${stem}.png"
+            cwebp -quiet -q 82 "assets/archive/optimized/${stem}.png" -o "assets/archive/optimized/${stem}.webp"
+            rm "assets/archive/optimized/${stem}.png"
+          done
+
+      - name: Commit imported assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/archive
+          if git diff --cached --quiet; then
+            echo "No asset changes to commit."
+            exit 0
+          fi
+          git commit -m "Import and optimize legacy Matrafisc assets"
+          git push origin main
