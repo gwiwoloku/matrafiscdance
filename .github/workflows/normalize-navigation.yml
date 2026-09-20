@@ -1,0 +1,97 @@
+name: Normalize navigation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/normalize-navigation.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Add Home links and mark light legal pages
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          root = Path(".")
+          changed = 0
+          legal_pages = {
+              Path("privacy.html"),
+              Path("terms.html"),
+              Path("it/privacy.html"),
+              Path("it/terms.html"),
+          }
+
+          for path in root.rglob("*.html"):
+              if ".git" in path.parts:
+                  continue
+
+              text = path.read_text(encoding="utf-8")
+              original = text
+              relative = path.relative_to(root)
+              italian = bool(re.search(r'<html[^>]+lang=["\']it', text, re.I))
+
+              # Legal pages also use the same light-page header treatment.
+              if relative in legal_pages:
+                  text = re.sub(
+                      r'<body(?![^>]*\bclass=)([^>]*)>',
+                      r'<body class="content-page"\1>',
+                      text,
+                      count=1,
+                      flags=re.I,
+                  )
+
+              nav_match = re.search(
+                  r'(<nav class="site-nav"[^>]*>)([\s\S]*?)(</nav>)',
+                  text,
+                  re.I,
+              )
+
+              if nav_match:
+                  nav_body = nav_match.group(2)
+
+                  # Avoid duplicate Home entries.
+                  has_home = bool(re.search(
+                      r'<a\b[^>]*href=["\'](?:/|/it/|\./|\.\./)["\'][^>]*>\s*Home\s*</a>',
+                      nav_body,
+                      re.I,
+                  ))
+
+                  if not has_home:
+                      is_home = relative == Path("index.html") or relative == Path("it/index.html")
+                      home_href = "/it/" if italian else "/"
+                      current = ' aria-current="page"' if is_home else ""
+                      home_link = f'\n      <a{current} href="{home_href}">Home</a>'
+                      replacement = nav_match.group(1) + home_link + nav_body + nav_match.group(3)
+                      text = text[:nav_match.start()] + replacement + text[nav_match.end():]
+
+              if text != original:
+                  path.write_text(text, encoding="utf-8")
+                  changed += 1
+
+          print(f"Updated {changed} HTML files.")
+
+      - name: Commit navigation updates
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add '*.html' '**/*.html'
+          if git diff --cached --quiet; then
+            echo "No navigation changes."
+            exit 0
+          fi
+          git commit -m "Add Home navigation and light-page header classes"
+          git pull --rebase origin main
+          git push origin main
