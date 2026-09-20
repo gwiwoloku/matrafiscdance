@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# Force HTTPS and canonical non-www host.
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.matrafiscdance\.com$ [NC]
+RewriteRule ^ https://matrafiscdance.com%{REQUEST_URI} [R=301,L]
+
+Redirect 301 /company/ /about-us/
+Redirect 301 /contact/ /contact-us/
+Redirect 301 /works/ /projects/
+Redirect 301 /repertoire/ /projects/
+Redirect 301 /news/ /
+Redirect 301 /it/company/ /it/compagnia/
+Redirect 301 /it/projects/ /it/progetti/
+Redirect 301 /it/contact/ /it/contatti/
+Redirect 301 /it/touring/ /it/tournee/
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
