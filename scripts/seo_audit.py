@@ -145,6 +145,19 @@ for ext in ("*.html", "*.js", "*.css"):
         t = p.read_text(encoding="utf-8")
         if "matrafiscdance.com/wp-content/uploads/" in t:
             errors.append(f"{p.relative_to(ROOT)}: legacy WordPress asset dependency remains")
+        if p.suffix == ".html" and ("fonts.googleapis.com" in t or "fonts.gstatic.com" in t):
+            errors.append(f"{p.relative_to(ROOT)}: Google Fonts dependency remains")
+        if p.suffix == ".html" and "cdnjs.cloudflare.com/ajax/libs/font-awesome" in t:
+            errors.append(f"{p.relative_to(ROOT)}: external Font Awesome dependency remains")
+
+for required_vendor in (
+    ROOT / "assets/vendor/fonts.css",
+    ROOT / "assets/vendor/fontawesome/css/all.min.css",
+    ROOT / "assets/vendor/fonts/inter-latin-400-normal.woff2",
+    ROOT / "assets/vendor/fonts/space-grotesk-latin-500-normal.woff2",
+):
+    if not required_vendor.exists():
+        errors.append(f"{required_vendor.relative_to(ROOT)}: required local vendor asset missing")
 
 sitemap = ROOT / "sitemap.xml"
 if not sitemap.exists():
