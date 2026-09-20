@@ -63,16 +63,36 @@ jobs:
             rm "assets/archive/optimized/${stem}.png"
           done
 
+      - name: Import local fonts and icon assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save --ignore-scripts @fortawesome/fontawesome-free@6.7.2 @fontsource/inter@5.2.5 @fontsource/space-grotesk@5.2.5
+
+          mkdir -p assets/vendor/fontawesome/css assets/vendor/fontawesome/webfonts assets/vendor/fonts
+
+          cp node_modules/@fortawesome/fontawesome-free/css/all.min.css assets/vendor/fontawesome/css/all.min.css
+          cp node_modules/@fortawesome/fontawesome-free/webfonts/* assets/vendor/fontawesome/webfonts/
+
+          cp node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2 assets/vendor/fonts/
+          cp node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2 assets/vendor/fonts/
+          cp node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2 assets/vendor/fonts/
+
+          cp node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff2 assets/vendor/fonts/
+          cp node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2 assets/vendor/fonts/
+          cp node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff2 assets/vendor/fonts/
+          cp node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2 assets/vendor/fonts/
+
       - name: Commit imported assets
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/archive
+          git add assets/archive assets/vendor
           if git diff --cached --quiet; then
             echo "No asset changes to commit."
             exit 0
           fi
-          git commit -m "Import and optimize legacy Matrafisc assets"
+          git commit -m "Import optimized images fonts and icon assets"
           git push origin main
