@@ -227,20 +227,10 @@
     }
   });
 
-  const dialogContent = document.getElementById('dialog-content');
-  if (dialogContent && 'MutationObserver' in window) {
-    const observer = new MutationObserver(() => {
-      const enquiry = dialogContent.querySelector('.dialog-enquire');
-      const title = dialogContent.querySelector('#dialog-title')?.textContent?.trim() || '';
-      if (!enquiry) return;
-      enquiry.href = '#contact';
-      enquiry.dataset.enquiry = 'Work enquiry';
-      enquiry.dataset.workTitle = title;
-      enquiry.innerHTML = `${copy.enquireLink} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>`;
-    });
-    observer.observe(dialogContent, { childList: true, subtree: true });
-  }
-
+  // Work enquiry links are rendered correctly by script.js in both languages.
+  // Do not observe/rewrite dialog contents here: rewriting the link from inside a
+  // childList MutationObserver creates a self-triggering mutation loop.
+  
   menuToggle?.addEventListener('click', () => {
     requestAnimationFrame(() => {
       const open = document.body.classList.contains('menu-open');
