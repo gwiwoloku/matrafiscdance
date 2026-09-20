@@ -156,7 +156,16 @@
 
   const initialize = () => {
     installLanguageSwitches();
-    recommendLanguage();
+
+    // Browser-language checks are cheap, while country detection can require a
+    // network request. Run localisation after the critical rendering path so it
+    // cannot compete with LCP resources.
+    const runRecommendation = () => recommendLanguage();
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(runRecommendation, { timeout: 1800 });
+    } else {
+      window.setTimeout(runRecommendation, 700);
+    }
   };
 
   if (document.readyState === 'loading') {
