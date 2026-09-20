@@ -32,10 +32,6 @@
     try { localStorage.setItem(key, value); } catch (_) {}
   }
 
-  function privacyPath() {
-    return isItalian ? 'privacy.html' : 'privacy.html';
-  }
-
   function activateMedia(root = document) {
     root.querySelectorAll('[data-media-src]').forEach(frame => {
       if (!frame.getAttribute('src')) {
@@ -76,7 +72,7 @@
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-label', copy.title);
 
-    const policyHref = isItalian ? 'privacy.html' : 'privacy.html';
+    const policyHref = isItalian ? '/it/privacy.html' : '/privacy.html';
     banner.innerHTML = `
       <div class="privacy-banner-copy">
         <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
@@ -110,7 +106,7 @@
     applyConsent(consent);
     bindMediaButtons();
 
-    if (!consent) showBanner();
+    if (!consent && document.querySelector('[data-media-src]')) showBanner();
 
     document.querySelectorAll('[data-privacy-settings]').forEach(button => {
       button.addEventListener('click', () => showBanner(true));

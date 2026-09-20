@@ -7,7 +7,7 @@ const works = {
     story: 'Bruise emerged from a conversation between two people marked by turbulent histories. Fullness and emptiness, sweetness and bitterness, vulnerability and choice become physical material rather than explanation.',
     extra: 'The scenic language is built around the possibility of choice and the way an audience can recognise fragments of its own emotional history in movement.',
     credit: 'Original archive photography: Marco Gambardella',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2016/10/bruise_logo.png',
+    mark: '/assets/archive/optimized/bruise_logo.webp',
     media: placeholder('Bruise', 'Production gallery ready for the original high-resolution archive.')
   },
   jobs: {
@@ -16,7 +16,7 @@ const works = {
     story: 'Jobs studies the body language of three occupations — card dealer, music conductor and painter — and the emotional extremes attached to work: pleasure, passion, frustration, resistance and dissatisfaction.',
     extra: 'The piece turns recognisable working gestures into a physical language about the psychological relationship between a person and what they do every day.',
     credit: 'Original archive photography: Marco Gambardella',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2016/10/jobs_matra.png',
+    mark: '/assets/archive/optimized/jobs_matra.webp',
     media: youtube('qhCNeH44snI', 'Jobs by Matrafisc Dance')
   },
   souls: {
@@ -25,7 +25,7 @@ const works = {
     story: 'Soul’s Paths is a site-specific performance built around an inner journey through friendship, love, fraternal bonds and sexuality. Dancers, live musicians and audiences share the same environment as the work moves from room to room.',
     extra: 'The project grew from an interest in life stories and the complexity of ordinary human experience. It was supported using public funding by Arts Council England.',
     credit: 'Original archive photography: Kay Ohio Cleveland',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2016/10/soul_paths_logo-1.png',
+    mark: '/assets/archive/optimized/soul_paths_logo-1.webp',
     media: vimeo('242437807', 'Soul’s Paths — Matrafisc Dance with Vonnegut Collective')
   },
   periodo: {
@@ -34,7 +34,7 @@ const works = {
     story: 'Periodo Blu explores the human condition using blue as its starting point. One character looks toward possibility and the future; the other is anchored to the past and to a darker psychological landscape.',
     extra: 'A mannequin head becomes a symbol of lost contact with reality while the duet moves between creation and destruction, stillness and motion, connection and withdrawal.',
     credit: 'Original archive photography: Rosa Sansone & Kay Ohio Cleveland',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2017/07/periodo_blu_logo.png',
+    mark: '/assets/archive/optimized/periodo_blu_logo.webp',
     media: youtube('JVxMB4HKDsk', 'Periodo Blu by Matrafisc Dance')
   },
   one: {
@@ -43,7 +43,7 @@ const works = {
     story: '1+1=1 treats identity not as a fixed shape but as a relationship between self, difference and multiplicity — the many facets that can exist inside one person and one collective.',
     extra: 'The work became part of Matrafisc’s international development and touring repertoire, connecting individual identity with the larger structures to which people belong.',
     credit: 'Original archive photography: Lucas Kao & Mario Gambardella',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2020/03/111_scritta.png',
+    mark: '/assets/archive/optimized/111_scritta.webp',
     media: youtube('OK08SJxaYAc', '1+1=1 by Matrafisc Dance')
   },
   listening: {
@@ -69,9 +69,9 @@ const works = {
     extra: 'The collaboration placed creative process and performance on the same continuum: students developed movement from their own identity while learning how individual material can converge inside a shared choreographic structure.',
     credit: 'Matrafisc Dance / University of Salford archive',
     images: [
-      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg', 'Ensemble performing That Place Over There'],
-      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT2-1.jpg', 'Solo performer in That Place Over There'],
-      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT3-1.jpeg', 'Dancer performing That Place Over There']
+      ['/assets/archive/optimized/TPOT1-1.webp', 'Ensemble performing That Place Over There'],
+      ['/assets/archive/optimized/TPOT2-1.webp', 'Solo performer in That Place Over There'],
+      ['/assets/archive/optimized/TPOT3-1.webp', 'Dancer performing That Place Over There']
     ]
   },
   study: {
@@ -80,7 +80,7 @@ const works = {
     story: 'Study of Hands #2 develops research inspired by Auguste Rodin and his process of deconstructing and fragmenting the human form. The project focuses on the expressive resonance of the hand and on how a fragment can be reintegrated into a larger body.',
     extra: 'Following Valeria Famularo’s earlier solo research, a two-week R&D period with Ina Colizza at the University of Salford developed the idea toward a site-specific work for gallery spaces.',
     credit: 'Creative idea: Valeria Famularo · collaboration with Matrafisc Dance',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2020/04/valeria-famularo.png',
+    mark: '/assets/archive/optimized/valeria-famularo.webp',
     media: placeholder('Study of Hands #2', 'R&D and gallery documentation can be added to this production archive.')
   },
   monkey: {
@@ -97,7 +97,7 @@ const works = {
     story: 'Inspired by Fernando Pessoa’s The Book of Disquiet, Restlessness follows characters who experience real life at a distance, carrying a past that prevents them from fully inhabiting the present.',
     extra: 'The work was commissioned for Pittsburgh-based Bodiography after the artists met in Salford and became part of the American company’s repertoire.',
     credit: 'Original archive photography: Eric Rosé',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2020/04/rest.png',
+    mark: '/assets/archive/optimized/rest.webp',
     media: placeholder('Restlessness', 'Bodiography production photography and film archive.')
   },
   midsummer: {
@@ -106,7 +106,7 @@ const works = {
     story: 'The duet emerged from the meeting of Maria Caruso and Antonello Apicella, bringing the past work of both choreographers into an intense shared creation.',
     extra: 'The choreography is conceived as a four-handed collaboration, using memory as the connective tissue between two artistic histories.',
     credit: 'Original archive photography: Eric Rosé',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2020/04/midsummer.png',
+    mark: '/assets/archive/optimized/midsummer.webp',
     media: placeholder('Midsummer Night’s Memory', 'Production gallery ready for original photography and video.')
   },
   tightrope: {
@@ -115,7 +115,7 @@ const works = {
     story: 'Tightrope Walkers is a choreographic laboratory around balance, off-balance, slowness, suspension and lightness. The artists work with the edge of perception as though crossing a line suspended in space.',
     extra: 'The research treats fear, instability and control as physical material, asking how a walk can slowly become dance.',
     credit: 'Original archive photography: Fausta Scamardella',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2020/04/akerusia.png',
+    mark: '/assets/archive/optimized/akerusia.webp',
     media: placeholder('Tightrope Walkers', 'Research photography and process documentation can live here.')
   },
   october: {
@@ -124,7 +124,7 @@ const works = {
     story: 'Based on a true October story, the work sits on a subtle line between time and experience: a difficult crush, a faraway journey, friendship and a mistake whose meaning changes with distance.',
     extra: 'The work premiered in Manchester in March 2020 and has continued to evolve through later presentations.',
     credit: 'Original archive photography: Agnieszka Konecka',
-    mark: 'https://matrafiscdance.com/wp-content/uploads/2020/04/october.png',
+    mark: '/assets/archive/optimized/october.webp',
     media: instagramPost('DITKsFxoiwJ', 'October — Matrafisc Dance')
   },
   world: {
@@ -253,9 +253,9 @@ const worksIt = {
     extra: 'La collaborazione ha posto processo creativo e performance sullo stesso continuum: gli studenti hanno sviluppato movimento a partire dalla propria identità imparando come il materiale individuale possa convergere in una struttura coreografica condivisa.',
     credit: 'Archivio Matrafisc Dance / University of Salford',
     images: [
-      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg', 'Ensemble in That Place Over There'],
-      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT2-1.jpg', 'Interprete solista in That Place Over There'],
-      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT3-1.jpeg', 'Danzatrice in That Place Over There']
+      ['/assets/archive/optimized/TPOT1-1.webp', 'Ensemble in That Place Over There'],
+      ['/assets/archive/optimized/TPOT2-1.webp', 'Interprete solista in That Place Over There'],
+      ['/assets/archive/optimized/TPOT3-1.webp', 'Danzatrice in That Place Over There']
     ]
   },
   study: {
@@ -445,7 +445,13 @@ function closeDialog() {
 }
 
 document.querySelectorAll('[data-work]').forEach(el => {
-  el.addEventListener('click', () => renderWork(el.dataset.work));
+  el.addEventListener('click', event => {
+    const isLink = el.matches('a[href]');
+    const modifiedClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
+    if (isLink && modifiedClick) return;
+    if (isLink) event.preventDefault();
+    renderWork(el.dataset.work);
+  });
 });
 
 dialogClose?.addEventListener('click', closeDialog);

@@ -146,3 +146,32 @@ The legal copy is an operational baseline for the current website implementation
 - Language detection and preference logic: `locale.js`
 - Privacy/media-consent logic: `privacy.js`
 - Shared styling: `styles.css` and `enhancements.css`
+
+
+## SEO architecture and migration
+
+The site now preserves legacy WordPress project URLs where possible and adds dedicated crawlable English/Italian content.
+
+Key indexable areas:
+- `/` and `/it/` — language homepages
+- `/projects/` and `/it/progetti/` — repertoire indexes
+- legacy English project paths such as `/bruise/`, `/jobs/`, `/periodo-blu/`, `/restlessness/`
+- `/it/progetti/<slug>/` — Italian project equivalents
+- `/about-us/` + `/it/compagnia/`
+- `/touring/` + `/it/tournee/`
+- `/workshops-education/` + `/it/workshop-formazione/`
+- `/contact-us/` + `/it/contatti/`
+
+`sitemap.xml` contains reciprocal hreflang entries. `robots.txt` advertises the sitemap. `404.html` is noindex. Privacy and terms pages are intentionally `noindex,follow`.
+
+The legacy WordPress assets previously referenced under `/wp-content/uploads/` have been imported into `assets/archive/`; optimized WebP copies live in `assets/archive/optimized/`. New templates use the local optimized assets.
+
+Automatic browser/IP language redirects were removed for SEO safety. Locale detection now offers a user-controlled language suggestion and never changes URL without the visitor choosing it.
+
+Migration redirect rules are included for Cloudflare Pages/Netlify in `_redirects` and for Apache in `.htaccess`. If deployed behind Nginx or another platform, translate the same redirect map into that host's configuration and keep the canonical non-www HTTPS hostname.
+
+After production deployment:
+1. Add the property to Google Search Console and Bing Webmaster Tools.
+2. Submit `https://matrafiscdance.com/sitemap.xml`.
+3. Inspect the homepage, `/projects/`, a legacy project page and an Italian project page.
+4. Monitor 404s, redirects, indexing and Core Web Vitals during the migration.
