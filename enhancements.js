@@ -23,10 +23,10 @@
     preparedWork: work => `Richiesta preparata per ${work}. Aggiungi i tuoi dati e il messaggio, poi invia.`,
     prepared: 'I dettagli della richiesta sono stati precompilati. Aggiungi i tuoi dati e il messaggio, poi invia.',
     sendingButton: 'Invio',
-    enquireLink: 'Richiedi informazioni su quest’opera',
+    enquireLink: 'Richiedi informazioni su questo progetto',
     workPrompt: work => work
       ? `Ciao Matrafisc Dance,\n\nsono interessato/a a ${work} e vorrei ricevere informazioni sulla possibilità di presentare o programmare questo lavoro, oppure saperne di più.\n\n`
-      : 'Ciao Matrafisc Dance,\n\nvorrei ricevere informazioni su uno dei vostri lavori.\n\n',
+      : 'Ciao Matrafisc Dance,\n\nvorrei ricevere informazioni su uno dei vostri progetti.\n\n',
     prompts: {
       'Touring / programming': 'Ciao Matrafisc Dance,\n\nvorrei parlare di una possibile programmazione o tournée della compagnia.\n\n',
       'Collaboration': 'Ciao Matrafisc Dance,\n\nvorrei parlare di una possibile collaborazione con la compagnia.\n\n',
@@ -34,7 +34,7 @@
       'Press / media': 'Ciao Matrafisc Dance,\n\nvorrei fare una richiesta stampa o media.\n\n'
     },
     subjectType: {
-      'Work enquiry': 'Richiesta opera',
+      'Work enquiry': 'Richiesta progetto',
       'Touring / programming': 'Tournée / programmazione',
       'Collaboration': 'Collaborazione',
       'Workshop / education': 'Workshop / formazione',
