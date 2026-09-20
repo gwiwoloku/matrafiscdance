@@ -100,3 +100,49 @@ FormSubmit activation and production delivery should be tested from the deployed
 The project can be deployed to GitHub Pages, Netlify, Vercel, Cloudflare Pages or any conventional web server.
 
 Some archive photography and production marks still load from the existing `matrafiscdance.com/wp-content/uploads/` URLs. Before retiring the old WordPress installation, copy those files into this repository (for example under `assets/images/archive/`) and update the references in `index.html` and `script.js`. This prevents historical media from disappearing when the old hosting is removed.
+
+
+## English / Italian localisation
+
+The public site now has real URL-based language versions rather than a client-side text-only translation:
+
+- English (default): `/`
+- Italian: `/it/`
+- English privacy / terms: `/privacy.html`, `/terms.html`
+- Italian privacy / terms: `/it/privacy.html`, `/it/terms.html`
+
+`locale.js` controls language selection. The priority is:
+
+1. A language explicitly chosen by the visitor using the globe switch.
+2. Italian when the browser language list contains Italian.
+3. Italian when country-level localisation indicates Italy.
+4. English in all other cases or when country detection is unavailable.
+
+Country detection first tries Cloudflare's same-origin `/cdn-cgi/trace` endpoint. When that endpoint is unavailable, it falls back to the GeoJS country-only endpoint. Only the country code is used by the site. A visitor automatically sent to Italian is shown a prompt asking whether they prefer the English website.
+
+The pages include canonical and `hreflang` metadata for English, Italian and `x-default`.
+
+## Privacy / GDPR implementation
+
+The site includes English and Italian Privacy Policy and Terms & Conditions pages.
+
+`privacy.js` manages the website's privacy preferences:
+
+- language and privacy choices are stored locally in the browser;
+- optional YouTube, Vimeo and Instagram embeds are blocked until the visitor allows external media;
+- visitors can choose “Necessary only” and continue using the site without external media;
+- the choice can be reopened at any time from the footer;
+- the contact form includes a just-in-time privacy notice before submission;
+- the Privacy Policy explains FormSubmit, language/country localisation, GeoJS fallback, retention, lawful bases and UK/EU data-protection rights.
+
+The legal copy is an operational baseline for the current website implementation. If the company's legal entity, registered address, data processors or business practices change, update the policy to match the real-world operation.
+
+## Editing translated content
+
+- Main English page copy: `index.html`
+- Main Italian page copy: `it/index.html`
+- Shared repertoire data and English/Italian work-dialog copy: `script.js`
+- Shared contact behaviour and bilingual status/prefill messages: `enhancements.js`
+- Language detection and preference logic: `locale.js`
+- Privacy/media-consent logic: `privacy.js`
+- Shared styling: `styles.css` and `enhancements.css`
