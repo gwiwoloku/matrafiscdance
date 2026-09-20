@@ -1,4 +1,5 @@
 (() => {
+  const isItalian = document.documentElement.lang.toLowerCase().startsWith('it');
   const form = document.getElementById('contact-form');
   const typeField = document.getElementById('contact-type');
   const workWrap = document.getElementById('contact-work-wrap');
@@ -11,10 +12,57 @@
   const submitButton = form?.querySelector('.contact-submit');
   const targetEmail = 'matrafiscdance@gmail.com';
   const formSubmitEndpoint = `https://formsubmit.co/ajax/${targetEmail}`;
-  const defaultSubmitMarkup = submitButton?.innerHTML || 'Send enquiry';
+  const defaultSubmitMarkup = submitButton?.innerHTML || (isItalian ? 'Invia richiesta' : 'Send enquiry');
 
-  // Progressive enhancement: the HTML form remains usable without JavaScript,
-  // while JavaScript submissions use FormSubmit's documented JSON AJAX endpoint.
+  const copy = isItalian ? {
+    ready: 'La tua richiesta verrà inviata direttamente a Matrafisc Dance.',
+    sending: 'Invio della richiesta…',
+    sent: 'Grazie — la tua richiesta è stata inviata a Matrafisc Dance.',
+    invalid: 'Completa i campi obbligatori prima di inviare la richiesta.',
+    failed: 'Non è stato possibile inviare la richiesta. Riprova oppure scrivi a',
+    preparedWork: work => `Richiesta preparata per ${work}. Aggiungi i tuoi dati e il messaggio, poi invia.`,
+    prepared: 'I dettagli della richiesta sono stati precompilati. Aggiungi i tuoi dati e il messaggio, poi invia.',
+    sendingButton: 'Invio',
+    enquireLink: 'Richiedi informazioni su quest’opera',
+    workPrompt: work => work
+      ? `Ciao Matrafisc Dance,\n\nsono interessato/a a ${work} e vorrei ricevere informazioni sulla possibilità di presentare o programmare questo lavoro, oppure saperne di più.\n\n`
+      : 'Ciao Matrafisc Dance,\n\nvorrei ricevere informazioni su uno dei vostri lavori.\n\n',
+    prompts: {
+      'Touring / programming': 'Ciao Matrafisc Dance,\n\nvorrei parlare di una possibile programmazione o tournée della compagnia.\n\n',
+      'Collaboration': 'Ciao Matrafisc Dance,\n\nvorrei parlare di una possibile collaborazione con la compagnia.\n\n',
+      'Workshop / education': 'Ciao Matrafisc Dance,\n\nvorrei ricevere informazioni su workshop, progetti educativi o residenze.\n\n',
+      'Press / media': 'Ciao Matrafisc Dance,\n\nvorrei fare una richiesta stampa o media.\n\n'
+    },
+    subjectType: {
+      'Work enquiry': 'Richiesta opera',
+      'Touring / programming': 'Tournée / programmazione',
+      'Collaboration': 'Collaborazione',
+      'Workshop / education': 'Workshop / formazione',
+      'Press / media': 'Stampa / media',
+      'General enquiry': 'Richiesta generale'
+    }
+  } : {
+    ready: 'Your enquiry will be sent directly to Matrafisc Dance.',
+    sending: 'Sending your enquiry…',
+    sent: 'Thank you — your enquiry has been sent to Matrafisc Dance.',
+    invalid: 'Please complete the required fields before sending your enquiry.',
+    failed: 'The enquiry could not be sent. Please try again or email',
+    preparedWork: work => `Enquiry prepared for ${work}. Add your details and message, then send.`,
+    prepared: 'Enquiry details have been prefilled. Add your contact details and message, then send.',
+    sendingButton: 'Sending',
+    enquireLink: 'Enquire about this work',
+    workPrompt: work => work
+      ? `Hello Matrafisc Dance,\n\nI'm interested in ${work} and would like to enquire about presenting, programming or learning more about this work.\n\n`
+      : `Hello Matrafisc Dance,\n\nI'd like to enquire about one of your works.\n\n`,
+    prompts: {
+      'Touring / programming': `Hello Matrafisc Dance,\n\nI'd like to discuss programming or touring opportunities with the company.\n\n`,
+      'Collaboration': `Hello Matrafisc Dance,\n\nI'd like to discuss a potential collaboration with the company.\n\n`,
+      'Workshop / education': `Hello Matrafisc Dance,\n\nI'd like to enquire about a workshop, educational project or residency.\n\n`,
+      'Press / media': `Hello Matrafisc Dance,\n\nI'd like to make a press or media enquiry.\n\n`
+    },
+    subjectType: {}
+  };
+
   if (form) {
     form.action = `https://formsubmit.co/${targetEmail}`;
     form.method = 'POST';
@@ -34,9 +82,7 @@
     form.appendChild(honeypot);
   }
 
-  if (status) {
-    status.textContent = 'Your enquiry will be sent directly to Matrafisc Dance.';
-  }
+  if (status) status.textContent = copy.ready;
 
   function updateWorkField() {
     const isWork = typeField?.value === 'Work enquiry';
@@ -50,7 +96,7 @@
     submitButton.disabled = isSubmitting;
     submitButton.setAttribute('aria-busy', String(isSubmitting));
     submitButton.innerHTML = isSubmitting
-      ? 'Sending <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>'
+      ? `${copy.sendingButton} <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>`
       : defaultSubmitMarkup;
   }
 
@@ -64,25 +110,13 @@
     if (type === 'Work enquiry' && workField) {
       const workExists = [...workField.options].some(option => option.value === work);
       workField.value = workExists ? work : '';
-      if (messageField && !messageField.value.trim()) {
-        messageField.value = work
-          ? `Hello Matrafisc Dance,\n\nI'm interested in ${work} and would like to enquire about presenting, programming or learning more about this work.\n\n`
-          : `Hello Matrafisc Dance,\n\nI'd like to enquire about one of your works.\n\n`;
-      }
+      if (messageField && !messageField.value.trim()) messageField.value = copy.workPrompt(work);
     } else if (messageField && !messageField.value.trim()) {
-      const prompts = {
-        'Touring / programming': `Hello Matrafisc Dance,\n\nI'd like to discuss programming or touring opportunities with the company.\n\n`,
-        'Collaboration': `Hello Matrafisc Dance,\n\nI'd like to discuss a potential collaboration with the company.\n\n`,
-        'Workshop / education': `Hello Matrafisc Dance,\n\nI'd like to enquire about a workshop, educational project or residency.\n\n`,
-        'Press / media': `Hello Matrafisc Dance,\n\nI'd like to make a press or media enquiry.\n\n`
-      };
-      messageField.value = prompts[type] || '';
+      messageField.value = copy.prompts[type] || '';
     }
 
     if (status) {
-      status.textContent = type === 'Work enquiry' && work
-        ? `Enquiry prepared for ${work}. Add your details and message, then send.`
-        : 'Enquiry details have been prefilled. Add your contact details and message, then send.';
+      status.textContent = type === 'Work enquiry' && work ? copy.preparedWork(work) : copy.prepared;
       status.className = 'contact-status is-ready';
     }
 
@@ -111,15 +145,13 @@
     if (!form.checkValidity()) {
       form.reportValidity();
       if (status) {
-        status.textContent = 'Please complete the required fields before sending your enquiry.';
+        status.textContent = copy.invalid;
         status.className = 'contact-status is-error';
       }
       return;
     }
 
     const data = new FormData(form);
-
-    // Silently discard obvious bot submissions caught by the honeypot.
     if (String(data.get('_honey') || '').trim()) {
       form.reset();
       updateWorkField();
@@ -131,15 +163,15 @@
     const type = String(data.get('enquiryType') || 'General enquiry').trim();
     const work = String(data.get('work') || '').trim();
     const message = String(data.get('message') || '').trim();
+    const subjectType = copy.subjectType[type] || type;
     const subject = work
-      ? `Matrafisc Dance — ${type} — ${work}`
-      : `Matrafisc Dance — ${type}`;
+      ? `Matrafisc Dance — ${subjectType} — ${work}`
+      : `Matrafisc Dance — ${subjectType}`;
 
-    // FormSubmit's fetch documentation expects JSON with an explicit JSON content type.
     const payload = {
       name,
       email,
-      enquiryType: type,
+      enquiryType: subjectType,
       message,
       _subject: subject,
       _template: 'table',
@@ -151,7 +183,7 @@
 
     setSubmitting(true);
     if (status) {
-      status.textContent = 'Sending your enquiry…';
+      status.textContent = copy.sending;
       status.className = 'contact-status';
     }
 
@@ -181,13 +213,13 @@
       updateWorkField();
 
       if (status) {
-        status.textContent = 'Thank you — your enquiry has been sent to Matrafisc Dance.';
+        status.textContent = copy.sent;
         status.className = 'contact-status is-ready';
       }
     } catch (error) {
       console.error('Matrafisc contact form submission failed:', error);
       if (status) {
-        status.innerHTML = 'The enquiry could not be sent. Please try again or email <a href="mailto:matrafiscdance@gmail.com">matrafiscdance@gmail.com</a>.';
+        status.innerHTML = `${copy.failed} <a href="mailto:${targetEmail}">${targetEmail}</a>.`;
         status.className = 'contact-status is-error';
       }
     } finally {
@@ -195,8 +227,6 @@
     }
   });
 
-  // Existing work dialogs are generated by script.js. Enhance their enquiry link after each render
-  // so it uses the shared contact form and carries the correct work title.
   const dialogContent = document.getElementById('dialog-content');
   if (dialogContent && 'MutationObserver' in window) {
     const observer = new MutationObserver(() => {
@@ -206,12 +236,11 @@
       enquiry.href = '#contact';
       enquiry.dataset.enquiry = 'Work enquiry';
       enquiry.dataset.workTitle = title;
-      enquiry.innerHTML = `Enquire about this work <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>`;
+      enquiry.innerHTML = `${copy.enquireLink} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>`;
     });
     observer.observe(dialogContent, { childList: true, subtree: true });
   }
 
-  // Keep the Font Awesome mobile menu icon in sync with the existing menu state.
   menuToggle?.addEventListener('click', () => {
     requestAnimationFrame(() => {
       const open = document.body.classList.contains('menu-open');
@@ -225,8 +254,6 @@
     menuIcon?.classList.remove('fa-xmark');
   }));
 
-  // Optional query-string prefill makes direct campaign links possible, e.g.
-  // ?enquiry=work&work=Bruise#contact
   const params = new URLSearchParams(window.location.search);
   const queryType = params.get('enquiry');
   const queryWork = params.get('work');
