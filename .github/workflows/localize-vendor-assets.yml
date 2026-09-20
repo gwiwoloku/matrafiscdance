@@ -1,0 +1,75 @@
+name: Localize frontend vendor assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/localize-vendor-assets.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Replace external font and icon stylesheets
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          root = Path(".")
+          changed = 0
+
+          for path in root.rglob("*.html"):
+              if ".git" in path.parts:
+                  continue
+
+              text = path.read_text(encoding="utf-8")
+              original = text
+
+              # Remove Google Fonts preconnects/stylesheet and external Font Awesome.
+              text = re.sub(r'\s*<link rel="preconnect" href="https://fonts\.googleapis\.com"\s*/?>', '', text)
+              text = re.sub(r'\s*<link rel="preconnect" href="https://fonts\.gstatic\.com"[^>]*>', '', text)
+              text = re.sub(r'\s*<link href="https://fonts\.googleapis\.com/[^"]+" rel="stylesheet"\s*/?>', '', text)
+              text = re.sub(r'\s*<link rel="stylesheet" href="https://cdnjs\.cloudflare\.com/ajax/libs/font-awesome/[^"]+"[^>]*>', '', text)
+
+              depth = "../" * len(path.parent.parts)
+              local_links = (
+                  f'\n  <link rel="stylesheet" href="{depth}assets/vendor/fonts.css" />'
+                  f'\n  <link rel="stylesheet" href="{depth}assets/vendor/fontawesome/css/all.min.css" />'
+              )
+
+              # Add once immediately before the site's main stylesheet.
+              if "assets/vendor/fonts.css" not in text:
+                  site_css = f'<link rel="stylesheet" href="{depth}styles.css" />'
+                  if site_css in text:
+                      text = text.replace(site_css, local_links + "\n  " + site_css, 1)
+                  else:
+                      text = text.replace("</head>", local_links + "\n</head>", 1)
+
+              if text != original:
+                  path.write_text(text, encoding="utf-8")
+                  changed += 1
+
+          print(f"Updated {changed} HTML files.")
+
+      - name: Commit localized frontend assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          git add '*.html' '**/*.html'
+          if git diff --cached --quiet; then
+            echo "No HTML changes."
+            exit 0
+          fi
+          git commit -m "Self-host fonts and icon assets across site"
+          git push origin main
