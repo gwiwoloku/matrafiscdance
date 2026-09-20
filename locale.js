@@ -1,7 +1,7 @@
 (() => {
   const LANG_KEY = 'matrafisc-language';
   const COUNTRY_KEY = 'matrafisc-country';
-  const PROMPT_KEY = 'matrafisc-auto-language-prompted';
+  const PROMPT_KEY = 'matrafisc-language-prompted';
   const currentLanguage = document.documentElement.lang.toLowerCase().startsWith('it') ? 'it' : 'en';
 
   function safeGet(storage, key) {
@@ -10,31 +10,6 @@
 
   function safeSet(storage, key, value) {
     try { storage.setItem(key, value); } catch (_) {}
-  }
-
-  function englishToItalian(pathname) {
-    if (/\/it\//.test(pathname)) return pathname;
-    if (/\/privacy\.html$/.test(pathname)) return pathname.replace(/privacy\.html$/, 'it/privacy.html');
-    if (/\/terms\.html$/.test(pathname)) return pathname.replace(/terms\.html$/, 'it/terms.html');
-    if (/\/index\.html$/.test(pathname)) return pathname.replace(/index\.html$/, 'it/');
-    return pathname.endsWith('/') ? pathname + 'it/' : pathname.replace(/[^/]*$/, 'it/');
-  }
-
-  function italianToEnglish(pathname) {
-    if (/\/it\/privacy\.html$/.test(pathname)) return pathname.replace(/it\/privacy\.html$/, 'privacy.html');
-    if (/\/it\/terms\.html$/.test(pathname)) return pathname.replace(/it\/terms\.html$/, 'terms.html');
-    if (/\/it\/index\.html$/.test(pathname)) return pathname.replace(/it\/index\.html$/, '');
-    if (/\/it\/$/.test(pathname)) return pathname.replace(/it\/$/, '');
-    return pathname.replace(/\/it\//, '/');
-  }
-
-  function navigateTo(language, automaticReason = '') {
-    const url = new URL(window.location.href);
-    url.pathname = language === 'it' ? englishToItalian(url.pathname) : italianToEnglish(url.pathname);
-    url.searchParams.delete('auto');
-    if (automaticReason) url.searchParams.set('auto', automaticReason);
-    url.hash = '';
-    window.location.replace(url.toString());
   }
 
   function browserPrefersItalian() {
@@ -89,6 +64,14 @@
     return country;
   }
 
+  function targetFor(language) {
+    const link = document.querySelector(`[data-language-switch="${language}"]`);
+    if (link?.href) return link.href;
+
+    const root = language === 'it' ? '/it/' : '/';
+    return new URL(root, window.location.origin).href;
+  }
+
   function installLanguageSwitches() {
     document.querySelectorAll('[data-language-switch]').forEach(link => {
       link.addEventListener('click', () => {
@@ -98,85 +81,87 @@
     });
   }
 
-  function showAutomaticItalianPrompt() {
-    if (currentLanguage !== 'it') return;
+  function showLanguageSuggestion(targetLanguage, reason = '') {
+    if (targetLanguage === currentLanguage) return;
+    if (safeGet(sessionStorage, PROMPT_KEY) === `${currentLanguage}:${targetLanguage}`) return;
 
-    const params = new URLSearchParams(window.location.search);
-    if (!params.get('auto')) return;
-    if (safeGet(localStorage, LANG_KEY)) return;
-    if (safeGet(sessionStorage, PROMPT_KEY)) return;
+    safeSet(sessionStorage, PROMPT_KEY, `${currentLanguage}:${targetLanguage}`);
 
-    safeSet(sessionStorage, PROMPT_KEY, '1');
-
+    const italianTarget = targetLanguage === 'it';
     const prompt = document.createElement('aside');
     prompt.className = 'language-prompt';
     prompt.setAttribute('role', 'dialog');
-    prompt.setAttribute('aria-label', 'Scelta della lingua');
+    prompt.setAttribute('aria-label', italianTarget ? 'Scelta della lingua' : 'Language choice');
+
+    const context = reason === 'saved'
+      ? (italianTarget ? 'Hai scelto l’italiano in precedenza.' : 'You previously chose English.')
+      : (italianTarget ? 'Il tuo browser o la tua posizione suggeriscono l’italiano.' : 'Your saved preference is English.');
+
     prompt.innerHTML = `
       <div>
         <i class="fa-solid fa-language" aria-hidden="true"></i>
-        <p><strong>Abbiamo aperto il sito in italiano.</strong><span>Preferisci visitare il sito in inglese?</span></p>
+        <p>
+          <strong>${italianTarget ? 'Preferisci il sito in italiano?' : 'Prefer the English website?'}</strong>
+          <span>${context}</span>
+        </p>
       </div>
       <div class="language-prompt-actions">
-        <button type="button" data-auto-language="en">English site</button>
-        <button type="button" data-auto-language="it">Continua in italiano</button>
+        <a class="language-prompt-primary" href="${targetFor(targetLanguage)}" data-language-suggestion="${targetLanguage}">
+          ${italianTarget ? 'Vai al sito italiano' : 'Go to English site'}
+        </a>
+        <button type="button" data-language-dismiss>
+          ${italianTarget ? 'Resta in inglese' : 'Continua in italiano'}
+        </button>
       </div>`;
 
     document.body.appendChild(prompt);
 
-    prompt.querySelector('[data-auto-language="en"]')?.addEventListener('click', () => {
-      safeSet(localStorage, LANG_KEY, 'en');
-      navigateTo('en');
+    prompt.querySelector('[data-language-suggestion]')?.addEventListener('click', event => {
+      const language = event.currentTarget.dataset.languageSuggestion;
+      safeSet(localStorage, LANG_KEY, language);
     });
 
-    prompt.querySelector('[data-auto-language="it"]')?.addEventListener('click', () => {
-      safeSet(localStorage, LANG_KEY, 'it');
-      const url = new URL(window.location.href);
-      url.searchParams.delete('auto');
-      history.replaceState({}, '', url.pathname + url.search + url.hash);
+    prompt.querySelector('[data-language-dismiss]')?.addEventListener('click', () => {
+      safeSet(localStorage, LANG_KEY, currentLanguage);
       prompt.remove();
     });
   }
 
-  async function autoSelectLanguage() {
+  async function recommendLanguage() {
     const preference = safeGet(localStorage, LANG_KEY);
 
-    if (currentLanguage === 'it') {
-      if (preference === 'en') navigateTo('en');
+    if (preference && preference !== currentLanguage) {
+      showLanguageSuggestion(preference, 'saved');
       return;
     }
 
-    if (preference === 'it') {
-      navigateTo('it');
-      return;
-    }
-    if (preference === 'en') return;
+    if (currentLanguage !== 'en' || preference === 'en') return;
 
     if (browserPrefersItalian()) {
-      navigateTo('it', 'browser');
+      showLanguageSuggestion('it', 'browser');
       return;
     }
 
     const country = await detectCountry();
-    if (country === 'IT') navigateTo('it', 'country');
+    if (country === 'IT') showLanguageSuggestion('it', 'country');
   }
 
   window.MatrafiscLocale = {
     set(language) {
-      safeSet(localStorage, LANG_KEY, language === 'it' ? 'it' : 'en');
-      navigateTo(language === 'it' ? 'it' : 'en');
+      const targetLanguage = language === 'it' ? 'it' : 'en';
+      safeSet(localStorage, LANG_KEY, targetLanguage);
+      window.location.assign(targetFor(targetLanguage));
     }
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      installLanguageSwitches();
-      showAutomaticItalianPrompt();
-    });
-  } else {
+  const initialize = () => {
     installLanguageSwitches();
-    showAutomaticItalianPrompt();
-  }
+    recommendLanguage();
+  };
 
-  autoSelectLanguage();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize, { once: true });
+  } else {
+    initialize();
+  }
 })();
