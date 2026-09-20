@@ -206,3 +206,20 @@
   .project-pagination a:last-child{text-align:left;border-top:1px solid var(--line)}
   .support-link{margin:14px 0 0}
 }
+
+
+/* Light-page header contrast */
+.content-page:not(.menu-open) .site-header:not(.scrolled),
+.project-page:not(.menu-open) .site-header:not(.scrolled) {
+  color: var(--ink);
+}
+
+.content-page:not(.menu-open) .site-header:not(.scrolled) .brand-logo,
+.project-page:not(.menu-open) .site-header:not(.scrolled) .brand-logo {
+  filter: brightness(0) saturate(100%);
+}
+
+.content-page:not(.menu-open) .site-header:not(.scrolled) .menu-toggle,
+.project-page:not(.menu-open) .site-header:not(.scrolled) .menu-toggle {
+  color: var(--ink);
+}
