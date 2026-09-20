@@ -10,6 +10,12 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://matrafiscdance.com/" />
   <meta property="og:image" content="https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg" />
+  <meta property="og:locale" content="en_GB" />
+  <link rel="canonical" href="https://matrafiscdance.com/" />
+  <link rel="alternate" hreflang="en" href="https://matrafiscdance.com/" />
+  <link rel="alternate" hreflang="it" href="https://matrafiscdance.com/it/" />
+  <link rel="alternate" hreflang="x-default" href="https://matrafiscdance.com/" />
+  <script src="locale.js"></script>
   <title>Matrafisc Dance — Contemporary Dance Company</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png" />
@@ -48,6 +54,7 @@
       <a href="#company">Company</a>
       <a href="#touring">Touring</a>
       <a href="#contact">Contact</a>
+      <a class="language-switch" href="it/" data-language-switch="it" aria-label="Switch to the Italian website"><i class="fa-solid fa-globe" aria-hidden="true"></i><span>IT</span></a>
     </nav>
   </header>
 
@@ -131,7 +138,14 @@
       </div>
       <div class="featured-media reveal">
         <div class="video-shell">
-          <iframe src="https://www.youtube-nocookie.com/embed/JVxMB4HKDsk" title="Periodo Blu by Matrafisc Dance" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="media-consent-gate">
+            <iframe data-media-src="https://www.youtube-nocookie.com/embed/JVxMB4HKDsk" title="Periodo Blu by Matrafisc Dance" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="media-consent-placeholder">
+              <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+              <p>External video is blocked to protect your privacy.</p>
+              <button type="button" data-allow-media>Allow and view</button>
+            </div>
+          </div>
         </div>
         <div class="media-caption"><span><i class="fa-solid fa-film" aria-hidden="true"></i> Film archive</span><span>Matrafisc Dance</span></div>
       </div>
@@ -183,7 +197,7 @@
       </div>
 
       <div class="contact-layout reveal">
-        <form class="contact-form" id="contact-form" action="mailto:matrafiscdance@gmail.com" method="post" enctype="text/plain" novalidate>
+        <form class="contact-form" id="contact-form" action="https://formsubmit.co/matrafiscdance@gmail.com" method="post" novalidate>
           <div class="form-row two-col">
             <label><span>Name</span><input type="text" name="name" id="contact-name" autocomplete="name" required /></label>
             <label><span>Email</span><input type="email" name="email" id="contact-email" autocomplete="email" required /></label>
@@ -213,9 +227,10 @@
           </div>
 
           <label class="message-label"><span>Message</span><textarea name="message" id="contact-message" rows="7" required placeholder="Tell Matrafisc about your event, venue, collaboration or question..."></textarea></label>
+          <p class="form-privacy-note">We use the details you provide only to handle your enquiry. Form submissions are processed through FormSubmit. Read our <a href="privacy.html">Privacy Policy</a> for details.</p>
           <div class="form-actions">
             <button class="contact-submit" type="submit">Send enquiry <i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
-            <p id="contact-status" class="contact-status" aria-live="polite">The form prepares an email in your default email app; no message is sent until you confirm it there.</p>
+            <p id="contact-status" class="contact-status" aria-live="polite">Your enquiry will be sent directly to Matrafisc Dance.</p>
           </div>
         </form>
 
@@ -234,7 +249,14 @@
   </main>
 
   <footer class="site-footer">
-    <span>© <span id="year"></span> Matrafisc Dance Company</span><span>Manchester, UK</span><a href="#top">Top <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
+    <span>© <span id="year"></span> Matrafisc Dance Company</span>
+    <span>Manchester, UK</span>
+    <div class="footer-legal">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <button class="privacy-settings" type="button" data-privacy-settings>Privacy choices</button>
+      <a href="#top">Top <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
+    </div>
   </footer>
 
   <dialog class="work-dialog" id="work-dialog" aria-labelledby="dialog-title">
@@ -244,5 +266,6 @@
 
   <script src="script.js"></script>
   <script src="enhancements.js"></script>
+  <script src="privacy.js"></script>
 </body>
 </html>
