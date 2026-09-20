@@ -1,3 +1,5 @@
+const isItalian = document.documentElement.lang.toLowerCase().startsWith('it');
+
 const works = {
   bruise: {
     index: '01', title: 'Bruise', type: 'Dance theatre · duet', period: '2015 →', creators: 'Ina Colizza & Antonello Apicella', group: 'Production',
@@ -135,29 +137,210 @@ const works = {
   }
 };
 
+function mediaGate(src, title, className, allow = '') {
+  const blocked = isItalian
+    ? 'Contenuto esterno bloccato per proteggere la tua privacy.'
+    : 'External media is blocked to protect your privacy.';
+  const load = isItalian ? 'Consenti e visualizza' : 'Allow and view';
+  const allowAttribute = allow ? ` allow="${allow}"` : '';
+  return `<div class="media-consent-gate">
+    <iframe class="${className}" data-media-src="${src}" title="${title}" loading="lazy"${allowAttribute} allowfullscreen></iframe>
+    <div class="media-consent-placeholder">
+      <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+      <p>${blocked}</p>
+      <button type="button" data-allow-media>${load}</button>
+    </div>
+  </div>`;
+}
+
 function youtube(id, title) {
-  return `<iframe class="media-embed" src="https://www.youtube-nocookie.com/embed/${id}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+  return mediaGate(
+    `https://www.youtube-nocookie.com/embed/${id}`,
+    title,
+    'media-embed',
+    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+  );
 }
 
 function vimeo(id, title) {
-  return `<iframe class="media-embed" src="https://player.vimeo.com/video/${id}?dnt=1" title="${title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  return mediaGate(
+    `https://player.vimeo.com/video/${id}?dnt=1`,
+    title,
+    'media-embed',
+    'autoplay; fullscreen; picture-in-picture'
+  );
 }
 
 function instagramPost(id, title) {
-  return `<iframe class="instagram-embed" src="https://www.instagram.com/p/${id}/embed" title="${title}" loading="lazy"></iframe>`;
+  return mediaGate(`https://www.instagram.com/p/${id}/embed`, title, 'instagram-embed');
 }
 
 function instagramReel(id, title) {
-  return `<iframe class="instagram-embed" src="https://www.instagram.com/reel/${id}/embed" title="${title}" loading="lazy"></iframe>`;
+  return mediaGate(`https://www.instagram.com/reel/${id}/embed`, title, 'instagram-embed');
 }
 
 function placeholder(title, note) {
-  return `<div class="media-placeholder" role="img" aria-label="${title} archive placeholder"><div><span class="placeholder-index">ARCHIVE</span><strong>${title}</strong><span>${note}</span></div></div>`;
+  const archive = isItalian ? 'ARCHIVIO' : 'ARCHIVE';
+  const aria = isItalian ? `Segnaposto archivio ${title}` : `${title} archive placeholder`;
+  return `<div class="media-placeholder" role="img" aria-label="${aria}"><div><span class="placeholder-index">${archive}</span><strong>${title}</strong><span>${note}</span></div></div>`;
 }
 
 function gallery(images) {
   return `<div class="dialog-gallery">${images.map(([src, alt], index) => `<figure class="dialog-gallery-item item-${index + 1}"><img src="${src}" alt="${alt}" loading="lazy" /></figure>`).join('')}</div>`;
 }
+
+const worksIt = {
+  bruise: {
+    type: 'Danza teatro · duetto', group: 'Produzione',
+    lead: 'I lividi invisibili continuano a vivere nel corpo — e la possibilità di scegliere rimane.',
+    story: 'Bruise nasce da una conversazione tra due persone segnate da storie turbolente. Pienezza e vuoto, dolcezza e amarezza, vulnerabilità e scelta diventano materia fisica più che spiegazione.',
+    extra: 'Il linguaggio scenico si costruisce attorno alla possibilità di scegliere e al modo in cui il pubblico può riconoscere nel movimento frammenti della propria storia emotiva.',
+    credit: 'Fotografia d’archivio originale: Marco Gambardella',
+    media: placeholder('Bruise', 'Spazio pronto per la galleria originale ad alta risoluzione.')
+  },
+  jobs: {
+    type: 'Danza teatro', period: 'Archivio', group: 'Produzione',
+    lead: 'Il lavoro diventa gesto. Il gesto diventa identità.',
+    story: 'Jobs osserva il linguaggio del corpo di tre professioni — croupier, direttore d’orchestra e pittore — e gli estremi emotivi legati al lavoro: piacere, passione, frustrazione, resistenza e insoddisfazione.',
+    extra: 'La pièce trasforma gesti professionali riconoscibili in un linguaggio fisico sul rapporto psicologico tra una persona e ciò che fa ogni giorno.',
+    credit: 'Fotografia d’archivio originale: Marco Gambardella',
+    media: youtube('qhCNeH44snI', 'Jobs di Matrafisc Dance')
+  },
+  souls: {
+    type: 'Site-specific · musica dal vivo', group: 'Produzione',
+    lead: 'Il viaggio inizia esattamente nel momento in cui entri.',
+    story: 'Soul’s Paths è una performance site-specific costruita come un viaggio interiore attraverso amicizia, amore, legami fraterni e sessualità. Danzatori, musicisti dal vivo e pubblico condividono lo stesso ambiente mentre il lavoro si sposta da una stanza all’altra.',
+    extra: 'Il progetto nasce dall’interesse per le storie di vita e per la complessità dell’esperienza umana quotidiana. È stato sostenuto con fondi pubblici di Arts Council England.',
+    credit: 'Fotografia d’archivio originale: Kay Ohio Cleveland',
+    media: vimeo('242437807', 'Soul’s Paths — Matrafisc Dance con Vonnegut Collective')
+  },
+  periodo: {
+    type: 'Danza teatro · duetto', group: 'Produzione',
+    lead: 'Due sfumature di blu. Due rapporti con il tempo.',
+    story: 'Periodo Blu esplora la condizione umana partendo dal colore blu. Un personaggio guarda alla possibilità e al futuro; l’altro rimane ancorato al passato e a un paesaggio psicologico più oscuro.',
+    extra: 'La testa di un manichino diventa simbolo della perdita di contatto con la realtà mentre il duetto si muove tra creazione e distruzione, immobilità e movimento, connessione e ritiro.',
+    credit: 'Fotografia d’archivio originale: Rosa Sansone e Kay Ohio Cleveland',
+    media: youtube('JVxMB4HKDsk', 'Periodo Blu di Matrafisc Dance')
+  },
+  one: {
+    type: 'Ensemble', group: 'Produzione',
+    lead: 'L’identità è possibile perché esiste la differenza.',
+    story: '1+1=1 considera l’identità non come una forma fissa, ma come una relazione tra sé, differenza e molteplicità — le molte sfaccettature che possono convivere in una persona e in un collettivo.',
+    extra: 'Il lavoro è entrato nel percorso di sviluppo e tournée internazionale di Matrafisc, mettendo in relazione l’identità individuale con le strutture più ampie a cui apparteniamo.',
+    credit: 'Fotografia d’archivio originale: Lucas Kao e Mario Gambardella',
+    media: youtube('OK08SJxaYAc', '1+1=1 di Matrafisc Dance')
+  },
+  listening: {
+    type: 'Ensemble', period: 'Lavoro per evento', group: 'Evento',
+    lead: 'Un lavoro con due personalità: una profonda, una leggera.',
+    story: 'Quattro donne comunicano prima attraverso un ritmo condiviso, poi diventano complici mentre l’atmosfera cambia e l’ensemble inizia a danzare insieme. Il lavoro si muove tra introspezione e apertura.',
+    extra: 'La pièce è strutturata in due parti e permette agli stessi corpi di passare dal dialogo individuale a una relazione più collettiva e giocosa.',
+    credit: 'Archivio Matrafisc Dance',
+    media: placeholder('Is Someone Listening?', 'Fotografie e filmati della produzione possono essere aggiunti qui senza modificare la struttura della pagina.')
+  },
+  europia: {
+    type: 'Tradizione / contemporaneo', period: 'Lavoro per evento', group: 'Evento',
+    lead: 'La tradizione sopravvive nei gesti, nel ritmo e nelle parole.',
+    story: 'Europia attinge alla straordinaria varietà del canto e della danza popolare italiana, usando movimento ereditato e memoria culturale come materiale per un linguaggio performativo contemporaneo.',
+    extra: 'Il lavoro collega le tradizioni popolari del passato ai corpi del presente, trattando il folklore come testimonianza viva e non come oggetto da museo.',
+    credit: 'Archivio Matrafisc Dance',
+    media: placeholder('Europia', 'Spazio pronto per fotografie, suono e video della produzione.')
+  },
+  thatplace: {
+    type: 'Ensemble · educazione / performance', creators: 'Matrafisc Dance + studenti della University of Salford', group: 'Collaborazione',
+    lead: 'Un luogo in cui tutti potrebbero trovare spazio — ma non tutti sentono di appartenere.',
+    story: 'That Place Over There esplora il senso di appartenenza attraverso cultura, gesto, memoria e oggetti che ricordano casa. Sviluppato con gli studenti della University of Salford, il progetto ha usato la ricerca coreografica di Matrafisc per riunire diversi linguaggi di movimento personali in un unico lavoro d’ensemble.',
+    extra: 'La collaborazione ha posto processo creativo e performance sullo stesso continuum: gli studenti hanno sviluppato movimento a partire dalla propria identità imparando come il materiale individuale possa convergere in una struttura coreografica condivisa.',
+    credit: 'Archivio Matrafisc Dance / University of Salford',
+    images: [
+      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT1-1.jpg', 'Ensemble in That Place Over There'],
+      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT2-1.jpg', 'Interprete solista in That Place Over There'],
+      ['https://matrafiscdance.com/wp-content/uploads/2020/04/TPOT3-1.jpeg', 'Danzatrice in That Place Over There']
+    ]
+  },
+  study: {
+    type: 'Ricerca in galleria / site-specific', creators: 'Valeria Famularo + Matrafisc Dance', group: 'Collaborazione',
+    lead: 'Il frammento può contenere la forza espressiva dell’intero corpo.',
+    story: 'Study of Hands #2 sviluppa una ricerca ispirata ad Auguste Rodin e al suo processo di decostruzione e frammentazione della forma umana. Il progetto si concentra sulla risonanza espressiva della mano e su come un frammento possa essere reintegrato in un corpo più ampio.',
+    extra: 'Dopo la precedente ricerca solista di Valeria Famularo, un periodo di due settimane di R&D con Ina Colizza alla University of Salford ha sviluppato l’idea verso un lavoro site-specific per spazi espositivi.',
+    credit: 'Idea creativa: Valeria Famularo · collaborazione con Matrafisc Dance',
+    media: placeholder('Study of Hands #2', 'Spazio pronto per documentazione di ricerca e materiali di galleria.')
+  },
+  monkey: {
+    type: 'Bambini / R&D', creators: 'Matrafisc Dance + Jo Lau', group: 'Collaborazione',
+    lead: 'Il primo progetto Matrafisc creato direttamente per i bambini.',
+    story: 'Monkey & Leopard nasce dalla collaborazione artistica tra Matrafisc e Jo Lau e segna il primo progetto della compagnia pensato specificamente per un pubblico di bambini.',
+    extra: 'Il progetto è stato sviluppato attraverso una fase di ricerca e sviluppo finanziata da Arts Council England, estendendo il linguaggio di movimento della compagnia verso il pubblico più giovane.',
+    credit: 'Archivio Matrafisc Dance',
+    media: placeholder('Monkey & Leopard', 'Spazio pronto per fotografie e filmati della fase di ricerca.')
+  },
+  restlessness: {
+    type: 'Commissione · Bodiography', creators: 'Matrafisc Dance / collaborazione Bodiography', group: 'Collaborazione',
+    lead: 'La vita esterna continua mentre quella interiore rimane intrappolata nella memoria.',
+    story: 'Ispirato a Il libro dell’inquietudine di Fernando Pessoa, Restlessness segue personaggi che vivono la realtà a distanza, portando con sé un passato che impedisce loro di abitare pienamente il presente.',
+    extra: 'Il lavoro è stato commissionato dalla compagnia Bodiography di Pittsburgh dopo l’incontro degli artisti a Salford ed è entrato nel repertorio della compagnia americana.',
+    credit: 'Fotografia d’archivio originale: Eric Rosé',
+    media: placeholder('Restlessness', 'Archivio pronto per fotografie e filmati della produzione Bodiography.')
+  },
+  midsummer: {
+    type: 'Duetto · collaborazione Bodiography', creators: 'Maria Caruso e Antonello Apicella', group: 'Collaborazione',
+    lead: 'La memoria diventa un punto d’incontro tra due storie coreografiche.',
+    story: 'Il duetto nasce dall’incontro tra Maria Caruso e Antonello Apicella, portando il lavoro passato di entrambi i coreografi dentro una creazione condivisa e intensa.',
+    extra: 'La coreografia è concepita a quattro mani, usando la memoria come tessuto connettivo tra due storie artistiche.',
+    credit: 'Fotografia d’archivio originale: Eric Rosé',
+    media: placeholder('Midsummer Night’s Memory', 'Spazio pronto per fotografie originali e video della produzione.')
+  },
+  tightrope: {
+    type: 'Ricerca coreografica', period: 'Collaborazione', creators: 'Matrafisc Dance + Akerusia Danza', group: 'Collaborazione',
+    lead: 'L’equilibrio diventa una danza sospesa nel vuoto.',
+    story: 'Tightrope Walkers è un laboratorio coreografico su equilibrio, disequilibrio, lentezza, sospensione e leggerezza. Gli artisti lavorano sul limite della percezione come se attraversassero una linea sospesa nello spazio.',
+    extra: 'La ricerca tratta paura, instabilità e controllo come materiale fisico, chiedendosi come un semplice cammino possa lentamente diventare danza.',
+    credit: 'Fotografia d’archivio originale: Fausta Scamardella',
+    media: placeholder('Tightrope Walkers', 'Qui possono vivere fotografie di ricerca e documentazione del processo.')
+  },
+  october: {
+    type: 'Duetto', creators: 'Matrafisc Dance', group: 'Recente',
+    lead: 'Un dialogo silenzioso. Un incontro inatteso. Un ricordo che non vuole scomparire.',
+    story: 'Basato su una vera storia di ottobre, il lavoro si muove su una linea sottile tra tempo ed esperienza: una cotta difficile, un viaggio lontano, amicizia e un errore il cui significato cambia con la distanza.',
+    extra: 'Il lavoro ha debuttato a Manchester nel marzo 2020 e ha continuato a evolversi attraverso presentazioni successive.',
+    credit: 'Fotografia d’archivio originale: Agnieszka Konecka',
+    media: instagramPost('DITKsFxoiwJ', 'October — Matrafisc Dance')
+  },
+  world: {
+    type: 'Solo', creators: 'Matrafisc Dance', group: 'Recente',
+    lead: 'La forza non appare come un ritorno a prima, ma come scoperta di un corpo cambiato.',
+    story: 'The World in My Body esplora la riscoperta della forza di una donna dopo il parto: recupero, trasformazione, resilienza e rinascita espressi attraverso il corpo.',
+    extra: 'Il programma 2025 indicava Alice Taylor come interprete.',
+    credit: 'Matrafisc Dance · repertorio recente',
+    media: instagramReel('DIBpu89ojcM', 'The World in My Body — Matrafisc Dance')
+  }
+};
+
+const ui = isItalian ? {
+  work: 'Opera',
+  format: 'Formato',
+  period: 'Periodo',
+  createdBy: 'Creato da',
+  archive: 'Archivio',
+  enquire: 'Richiedi informazioni su quest’opera',
+  mediaArchive: 'Archivio media',
+  picturesFilm: 'Foto e video',
+  mediaFallback: 'Spazio pronto per fotografie e filmati.',
+  closeMenu: 'Chiudi menu',
+  openMenu: 'Apri menu'
+} : {
+  work: 'Work',
+  format: 'Format',
+  period: 'Period',
+  createdBy: 'Created by',
+  archive: 'Archive',
+  enquire: 'Enquire about this work',
+  mediaArchive: 'Media archive',
+  picturesFilm: 'Pictures & film',
+  mediaFallback: 'Media archive ready for photography and film.',
+  closeMenu: 'Close menu',
+  openMenu: 'Open menu'
+};
 
 const header = document.querySelector('.site-header');
 const menuToggle = document.querySelector('.menu-toggle');
@@ -178,13 +361,13 @@ updateHeader();
 menuToggle?.addEventListener('click', () => {
   const open = document.body.classList.toggle('menu-open');
   menuToggle.setAttribute('aria-expanded', String(open));
-  menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  menuToggle.setAttribute('aria-label', open ? ui.closeMenu : ui.openMenu);
 });
 
 nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
   document.body.classList.remove('menu-open');
   menuToggle?.setAttribute('aria-expanded', 'false');
-  menuToggle?.setAttribute('aria-label', 'Open menu');
+  menuToggle?.setAttribute('aria-label', ui.openMenu);
 }));
 
 if ('IntersectionObserver' in window) {
@@ -213,12 +396,13 @@ filterButtons.forEach(button => {
 });
 
 function renderWork(key) {
-  const work = works[key];
-  if (!work || !dialog || !dialogContent) return;
+  const baseWork = works[key];
+  if (!baseWork || !dialog || !dialogContent) return;
+  const work = isItalian ? { ...baseWork, ...(worksIt[key] || {}) } : baseWork;
 
   const visual = work.images?.length
     ? gallery(work.images)
-    : work.media || placeholder(work.title, 'Media archive ready for photography and film.');
+    : work.media || placeholder(work.title, ui.mediaFallback);
 
   dialogContent.innerHTML = `
     <section class="dialog-hero" data-index="${work.index}">
@@ -230,21 +414,21 @@ function renderWork(key) {
     </section>
     <section class="dialog-body">
       <aside class="dialog-facts">
-        <div><span>Work</span><span>${work.title}</span></div>
-        <div><span>Format</span><span>${work.type}</span></div>
-        <div><span>Period</span><span>${work.period}</span></div>
-        <div><span>Created by</span><span>${work.creators}</span></div>
-        <div><span>Archive</span><span>${work.credit}</span></div>
+        <div><span>${ui.work}</span><span>${work.title}</span></div>
+        <div><span>${ui.format}</span><span>${work.type}</span></div>
+        <div><span>${ui.period}</span><span>${work.period}</span></div>
+        <div><span>${ui.createdBy}</span><span>${work.creators}</span></div>
+        <div><span>${ui.archive}</span><span>${work.credit}</span></div>
       </aside>
       <div class="dialog-story">
         <p class="lead">${work.lead}</p>
         <p>${work.story}</p>
         <p>${work.extra}</p>
-        <a class="dialog-enquire" href="mailto:matrafiscdance@gmail.com?subject=${encodeURIComponent(`Matrafisc Dance - ${work.title} enquiry`)}">Enquire about this work ↗</a>
+        <a class="dialog-enquire" href="#contact" data-enquiry="Work enquiry" data-work-title="${work.title}">${ui.enquire} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </section>
     <section class="dialog-media">
-      <div class="dialog-section-head"><p class="eyebrow">Media archive</p><h3>Pictures &amp; film</h3></div>
+      <div class="dialog-section-head"><p class="eyebrow">${ui.mediaArchive}</p><h3>${ui.picturesFilm}</h3></div>
       <div class="embed-grid">${visual}</div>
     </section>`;
 
@@ -272,6 +456,6 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && document.body.classList.contains('menu-open')) {
     document.body.classList.remove('menu-open');
     menuToggle?.setAttribute('aria-expanded', 'false');
-    menuToggle?.setAttribute('aria-label', 'Open menu');
+    menuToggle?.setAttribute('aria-label', ui.openMenu);
   }
 });
