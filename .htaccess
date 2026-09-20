@@ -23,3 +23,15 @@ Redirect 301 /it/touring/ /it/tournee/
   ExpiresByType text/css "access plus 7 days"
   ExpiresByType application/javascript "access plus 7 days"
 </IfModule>
+
+ErrorDocument 404 /404.html
+
+Redirect 301 /1-plus-1-equals-1/ /111-2/
+Redirect 301 /that-place-over-there/ /salford-university/
+Redirect 301 /study-of-hands-2/ /valeria-famularo/
+Redirect 301 /monkey-and-leopard/ /jo-lau/
+Redirect 301 /tightrope-walkers/ /akerusia-danza/
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
+</IfModule>
