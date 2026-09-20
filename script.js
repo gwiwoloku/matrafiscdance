@@ -317,12 +317,12 @@ const worksIt = {
 };
 
 const ui = isItalian ? {
-  work: 'Opera',
+  work: 'Progetto',
   format: 'Formato',
   period: 'Periodo',
   createdBy: 'Creato da',
   archive: 'Archivio',
-  enquire: 'Richiedi informazioni su quest’opera',
+  enquire: 'Richiedi informazioni su questo progetto',
   mediaArchive: 'Archivio media',
   picturesFilm: 'Foto e video',
   mediaFallback: 'Spazio pronto per fotografie e filmati.',
