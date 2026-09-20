@@ -139,9 +139,13 @@
   }
 
   async function autoSelectLanguage() {
-    if (currentLanguage !== 'en') return;
-
     const preference = safeGet(localStorage, LANG_KEY);
+
+    if (currentLanguage === 'it') {
+      if (preference === 'en') navigateTo('en');
+      return;
+    }
+
     if (preference === 'it') {
       navigateTo('it');
       return;
