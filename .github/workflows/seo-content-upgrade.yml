@@ -1,0 +1,51 @@
+name: Apply SEO content upgrade
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/seo_upgrade_20260924.py"
+      - ".github/workflows/seo-content-upgrade.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Apply SEO upgrade
+        run: python scripts/seo_upgrade_20260924.py
+
+      - name: Validate before commit
+        run: |
+          python scripts/seo_audit.py
+          node --check script.js
+          node --check enhancements.js
+          node --check locale.js
+          node --check privacy.js
+          node --check site-common.js
+
+      - name: Commit SEO upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No SEO changes to commit."
+            exit 0
+          fi
+          git commit -m "Complete Google-focused SEO content and performance upgrade"
+          git pull --rebase origin main
+          git push origin main
