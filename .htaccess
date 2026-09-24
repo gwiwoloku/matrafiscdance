@@ -1,7 +1,8 @@
 RewriteEngine On
 
-# Force HTTPS and canonical non-www host.
-RewriteCond %{HTTPS} !=on [OR]
+# Cloudflare Flexible SSL terminates HTTPS at Cloudflare and connects to
+# Fasthosts over HTTP. Do not force HTTPS at the origin or this creates a
+# redirect loop. Only canonicalise the www hostname here.
 RewriteCond %{HTTP_HOST} ^www\.matrafiscdance\.com$ [NC]
 RewriteRule ^ https://matrafiscdance.com%{REQUEST_URI} [R=301,L]
 
