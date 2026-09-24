@@ -2,7 +2,7 @@
 /contact/ /contact-us/ 301
 /works/ /projects/ 301
 /repertoire/ /projects/ 301
-/news/ / 301
+
 /it/company/ /it/compagnia/ 301
 /it/projects/ /it/progetti/ 301
 /it/contact/ /it/contatti/ 301
@@ -14,3 +14,9 @@
 /study-of-hands-2/ /valeria-famularo/ 301
 /monkey-and-leopard/ /jo-lau/ 301
 /tightrope-walkers/ /akerusia-danza/ 301
+
+/contacts/ /contact-us/ 301
+/productions/ /projects/ 301
+/events/ /projects/ 301
+/artistic-collaborations/ /projects/ 301
+/news/ /404.html 410

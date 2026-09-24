@@ -10,12 +10,16 @@ Redirect 301 /company/ /about-us/
 Redirect 301 /contact/ /contact-us/
 Redirect 301 /works/ /projects/
 Redirect 301 /repertoire/ /projects/
-Redirect 301 /news/ /
 Redirect 301 /it/company/ /it/compagnia/
 Redirect 301 /it/projects/ /it/progetti/
 Redirect 301 /it/contact/ /it/contatti/
 Redirect 301 /it/touring/ /it/tournee/
 
+Redirect 301 /contacts/ /contact-us/
+Redirect 301 /productions/ /projects/
+Redirect 301 /events/ /projects/
+Redirect 301 /artistic-collaborations/ /projects/
+Redirect gone /news/
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/webp "access plus 1 year"

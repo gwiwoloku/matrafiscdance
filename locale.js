@@ -35,30 +35,11 @@
     }
   }
 
-  async function countryFromGeoJS() {
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 1800);
-    try {
-      const response = await fetch('https://get.geojs.io/v1/ip/country.json', {
-        cache: 'no-store',
-        signal: controller.signal
-      });
-      if (!response.ok) return '';
-      const result = await response.json();
-      return String(result.country || '').toUpperCase();
-    } catch (_) {
-      return '';
-    } finally {
-      window.clearTimeout(timer);
-    }
-  }
-
   async function detectCountry() {
     const cached = safeGet(sessionStorage, COUNTRY_KEY);
     if (cached) return cached;
 
-    let country = await countryFromCloudflare();
-    if (!country) country = await countryFromGeoJS();
+    const country = await countryFromCloudflare();
 
     if (country) safeSet(sessionStorage, COUNTRY_KEY, country);
     return country;

@@ -17,10 +17,6 @@
     menuToggle.setAttribute('aria-label', open
       ? (isItalian ? 'Chiudi menu' : 'Close menu')
       : (isItalian ? 'Apri menu' : 'Open menu'));
-
-    const icon = menuToggle.querySelector('i');
-    icon?.classList.toggle('fa-bars', !open);
-    icon?.classList.toggle('fa-xmark', open);
   });
 
   nav?.querySelectorAll('a').forEach(link => {
@@ -28,9 +24,6 @@
       document.body.classList.remove('menu-open');
       menuToggle?.setAttribute('aria-expanded', 'false');
       menuToggle?.setAttribute('aria-label', isItalian ? 'Apri menu' : 'Open menu');
-      const icon = menuToggle?.querySelector('i');
-      icon?.classList.add('fa-bars');
-      icon?.classList.remove('fa-xmark');
     });
   });
 

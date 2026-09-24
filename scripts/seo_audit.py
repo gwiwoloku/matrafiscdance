@@ -176,6 +176,65 @@ else:
     except Exception as exc:
         errors.append(f"sitemap.xml: XML parse failed: {exc}")
 
+
+# SEO content-quality regression checks
+indexable_meta = {}
+for page in pages:
+    raw = page.read_text(encoding="utf-8")
+    parser = PageParser()
+    parser.feed(raw)
+    if page.name == "404.html" or has_noindex(parser):
+        continue
+    rel = str(page.relative_to(ROOT))
+    title = "".join(parser.title_text).strip()
+    descriptions = [m.get("content", "").strip() for m in parser.meta if m.get("name", "").lower() == "description"]
+    description = descriptions[0] if descriptions else ""
+    if description and not (80 <= len(description) <= 170):
+        errors.append(f"{rel}: meta description length should be 80-170 characters, found {len(description)}")
+    if '<a ' in raw and re.search(r'<a\b[^>]*\btype=["\']button["\']', raw, re.I):
+        errors.append(f"{rel}: anchor contains invalid type=button")
+    if "assets/vendor/fontawesome/css/all.min.css" in raw:
+        errors.append(f"{rel}: Font Awesome stylesheet is still loaded")
+    if title:
+        indexable_meta.setdefault(("title", title), []).append(rel)
+    if description:
+        indexable_meta.setdefault(("description", description), []).append(rel)
+
+for (kind, value), owners in indexable_meta.items():
+    if len(owners) > 1:
+        errors.append(f"duplicate {kind}: {owners}")
+
+for project_path in [
+    "bruise/index.html","jobs/index.html","souls-paths/index.html","periodo-blu/index.html","111-2/index.html",
+    "is-someone-listening/index.html","europia/index.html","salford-university/index.html","valeria-famularo/index.html",
+    "jo-lau/index.html","restlessness/index.html","midsummer-nights-memory/index.html","akerusia-danza/index.html",
+    "october/index.html","the-world-in-my-body/index.html"
+]:
+    raw = (ROOT / project_path).read_text(encoding="utf-8")
+    visible = re.sub(r'<script[\s\S]*?</script>|<style[\s\S]*?</style>|<[^>]+>', ' ', raw, flags=re.I)
+    words = len(re.findall(r"\b[\w’'-]+\b", visible))
+    if words < 190:
+        errors.append(f"{project_path}: project page is too thin ({words} visible words)")
+    if "related-projects" not in raw or "project-context-grid" not in raw:
+        errors.append(f"{project_path}: missing contextual/related project SEO sections")
+
+sitemap_raw = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+if "<changefreq>" in sitemap_raw or "<priority>" in sitemap_raw:
+    errors.append("sitemap.xml: contains ignored changefreq/priority values")
+if "xmlns:image=" not in sitemap_raw:
+    errors.append("sitemap.xml: image namespace missing")
+
+htaccess_raw = (ROOT / ".htaccess").read_text(encoding="utf-8")
+for required_redirect in (
+    "Redirect 301 /contacts/ /contact-us/",
+    "Redirect 301 /productions/ /projects/",
+    "Redirect 301 /events/ /projects/",
+    "Redirect 301 /artistic-collaborations/ /projects/",
+    "Redirect gone /news/",
+):
+    if required_redirect not in htaccess_raw:
+        errors.append(f".htaccess: missing migration rule {required_redirect}")
+
 robots = ROOT / "robots.txt"
 if not robots.exists() or "Sitemap: https://matrafiscdance.com/sitemap.xml" not in robots.read_text(encoding="utf-8"):
     errors.append("robots.txt: missing canonical sitemap declaration")

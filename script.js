@@ -146,7 +146,7 @@ function mediaGate(src, title, className, allow = '') {
   return `<div class="media-consent-gate">
     <iframe class="${className}" data-media-src="${src}" title="${title}" loading="lazy"${allowAttribute} allowfullscreen></iframe>
     <div class="media-consent-placeholder">
-      <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+      <span class="icon-glyph" aria-hidden="true">✓</span>
       <p>${blocked}</p>
       <button type="button" data-allow-media>${load}</button>
     </div>
@@ -424,7 +424,7 @@ function renderWork(key) {
         <p class="lead">${work.lead}</p>
         <p>${work.story}</p>
         <p>${work.extra}</p>
-        <a class="dialog-enquire" href="#contact" data-enquiry="Work enquiry" data-work-title="${work.title}">${ui.enquire} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        <a class="dialog-enquire" href="#contact" data-enquiry="Work enquiry" data-work-title="${work.title}">${ui.enquire} <span class="icon-glyph" aria-hidden="true">→</span></a>
       </div>
     </section>
     <section class="dialog-media">
@@ -445,13 +445,8 @@ function closeDialog() {
 }
 
 document.querySelectorAll('[data-work]').forEach(el => {
-  el.addEventListener('click', event => {
-    const isLink = el.matches('a[href]');
-    const modifiedClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
-    if (isLink && modifiedClick) return;
-    if (isLink) event.preventDefault();
-    renderWork(el.dataset.work);
-  });
+  if (el.matches('a[href]')) return;
+  el.addEventListener('click', () => renderWork(el.dataset.work));
 });
 
 dialogClose?.addEventListener('click', closeDialog);
